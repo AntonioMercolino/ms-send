@@ -4,10 +4,7 @@ import { Column, Entity, Index, ManyToOne, OneToMany } from "typeorm";
 import { Notification } from "../entities/notification.entity";
 import { DigitalDomicileDTO } from "../dtos/digitalDomicile.dto";
 import { PhysicalAddressDTO } from "../dtos/physicalAdress.dto";
-import { Payment } from "./payment.entity";
-import { PhysicalAddress } from "./physicalAdress.entity";
-import { DigitalDomicile } from "./digitalDomicile.entity";
-
+import { PaymentDTO } from "../dtos/payment.dto";
 
 Entity()
 export class Recipient extends CustomBaseEntity {
@@ -15,34 +12,33 @@ export class Recipient extends CustomBaseEntity {
     @Column()
     @IsString()
     @Index()
-    taxId!:string;
+    taxId!: string;
 
     @Column()
     @IsString()
     @Index()
-    denomination!:string;
-    
-    @Column()
-    @IsString()
-    @Index()
-    recipientType!:string;
+    denomination!: string;
 
     @Column()
     @IsString()
     @Index()
-    internalId!:string;
+    recipientType!: string;
 
-    @Column(() => PhysicalAddress)
-    physicalAddress!: PhysicalAddress;
+    @Column()
+    @IsString()
+    @Index()
+    internalId!: string;
 
-    @Column(() => DigitalDomicile)
-    digitalDomicile!:DigitalDomicile;
+    @Column(() => PhysicalAddressDTO)
+    physicalAddress!: PhysicalAddressDTO;
 
+    @Column(() => DigitalDomicileDTO)
+    digitalDomicile!: DigitalDomicileDTO;
 
     @ManyToOne(() => Notification, (notification) => notification.recipient)
     notificationId!: string;
 
     @Column()
     @Index()
-    payments!: Payment;
+    payments!: PaymentDTO;
 }
