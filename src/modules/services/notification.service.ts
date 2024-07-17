@@ -57,51 +57,51 @@ export class NotificationService {
 
     }
 
-    async find(query: PaginateQuery): Promise<Paginated<Notification> | undefined> {
-        try {
-            return await paginate(query, this.notificationRepository, {
-                sortableColumns: [
-                    'id',
-                    'updatedAt',
-                    'createdAt',
-                    'toBeSent',
-                    'errors',
-                    'nextSendingTime',
-                    'paProtocolNumber',
-                    'subject',
-                    'abstract',
-                    'taxonomyCode',
-                    'notificationFeePolicy',
-                    'senderTaxId',
-                    'senderDenomination',
-                    'group',
-                    'physicalCommunicationType',
-                    'vat',
-                    'paFree',
-                    'paymentExpirationDate',
-                    'amount',
-                    'cancelledIun',
-                    'documents',
-                    'recipient'
-                ],
-                filterableColumns: {
-                    'id': true,
-                    'updatedAt': true,
-                    'createdAt': true,
-                    'name': true,
-                    'code': true,
-                    'isEnabled': true,
-                    'documents(':true,
-                    'recipient(': true
-                },
-                searchableColumns: ["createdAt", "updatedAt", "id", "name", "code", "isEnabled"],
-                select: ["createdAt", "updatedAt", "id", "name", "code", "isEnabled"],
-                defaultSortBy: [['id', 'ASC']],
-            });
-        } catch (e) {
-            this.logger.error(e);
-            return undefined;
-        }
-    }
+    // async find(query: PaginateQuery): Promise<Paginated<Notification> | undefined> {
+    //     try {
+    //         return await paginate(query, this.notificationRepository, {
+    //             sortableColumns: [
+    //                 'id',
+    //                 'updatedAt',
+    //                 'createdAt',
+    //                 'toBeSent',
+    //                 'errors',
+    //                 'nextSendingTime',
+    //                 'paProtocolNumber',
+    //                 'subject',
+    //                 'abstract',
+    //                 'taxonomyCode',
+    //                 'notificationFeePolicy',
+    //                 'senderTaxId',
+    //                 'senderDenomination',
+    //                 'group',
+    //                 'physicalCommunicationType',
+    //                 'vat',
+    //                 'paFree',
+    //                 'paymentExpirationDate',
+    //                 'amount',
+    //                 'cancelledIun',
+    //                 'documents',
+    //                 'recipient'
+    //             ],
+    //             filterableColumns: {
+    //                 'id': true,
+    //                 'updatedAt': true,
+    //                 'createdAt': true,
+    //                 'name': true,
+    //                 'code': true,
+    //                 'isEnabled': true,
+    //                 'documents(':true,
+    //                 'recipient(': true
+    //             },
+    //             searchableColumns: ["createdAt", "updatedAt", "id", "name", "code", "isEnabled"],
+    //             select: ["createdAt", "updatedAt", "id", "name", "code", "isEnabled"],
+    //             defaultSortBy: [['id', 'ASC']],
+    //         });
+    //     } catch (e) {
+    //         this.logger.error(e);
+    //         return undefined;
+    //     }
+    // }
 
 }
