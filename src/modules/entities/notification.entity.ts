@@ -20,100 +20,82 @@ export class Notification extends CustomBaseEntity {
     @Column()
     @IsDate()
     @Index()
-    nextSendingTime!:Date;
-
-    
-    @Column()
-    @IsString()
-    @Index()
-    paProtocolNumber!:string;
+    nextSendingTime!: Date;
 
     @Column()
     @IsString()
     @Index()
-    subject!:string;
-
-
-    @Column()
-    @IsString()
-    @Index()
-    abstract!:string;
+    paProtocolNumber!: string;
 
     @Column()
     @IsString()
     @Index()
-    taxonomyCode!:string;
+    subject!: string;
 
     @Column()
     @IsString()
     @Index()
-    notificationFeePolicy!:string;
+    abstract!: string;
 
     @Column()
     @IsString()
     @Index()
-    senderTaxId!:string;
+    taxonomyCode!: string;
 
     @Column()
     @IsString()
     @Index()
-    senderDenomination!:string;
+    notificationFeePolicy!: string;
 
     @Column()
     @IsString()
     @Index()
-    group!:string;
+    senderTaxId!: string;
 
     @Column()
     @IsString()
     @Index()
-    physicalCommunicationType!:string;
+    senderDenomination!: string;
+
+    @Column()
+    @IsString()
+    @Index()
+    group!: string;
+
+    @Column()
+    @IsString()
+    @Index()
+    physicalCommunicationType!: string;
 
     @Column()
     @IsNumber()
     @Index()
-    vat!:number;
+    vat!: number;
 
     @Column()
     @IsNumber()
     @Index()
-    paFree!:number;
-    
-    
+    paFree!: number;
+
     @Column()
     @IsString()
     @Index()
-    paymentExpirationDate!:string;
+    paymentExpirationDate!: string;
 
     @Column()
     @IsNumber()
     @Index()
-    amount!:number;
-    
+    amount!: number;
+
     @Column()
     @IsString()
     @Index()
-    cancelledIun!:string;
-    
+    cancelledIun!: string;
+
     @IsOptional()
-    @OneToMany((type) => Document, (document) =>document.notificationId)
+    @OneToMany((type) => Document, (document) => document.notificationId)
     documents?: Document[];
 
     @OneToMany(() => Recipient, (recipient) => recipient.notificationId)
     recipient!: Recipient[];
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

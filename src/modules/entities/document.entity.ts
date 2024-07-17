@@ -1,11 +1,9 @@
-
 import { IsOptional, IsString } from "class-validator";
 import { CustomBaseEntity } from "src/shared-modules/database/entities/custom-base-entity.config";
 import { Column, Entity, Index, ManyToOne } from "typeorm";
 import { Notification } from "../entities/notification.entity";
-import { Ref } from "./ref.entity";
 import { RefDTO } from "../dtos/ref.dto";
-import { Digest } from "./digest.entity";
+import { DigestDTO } from "../dtos/digest.dto";
 
 
 @Entity()
@@ -13,47 +11,43 @@ export class Document extends CustomBaseEntity {
     @Column()
     @IsString()
     @Index()
-    path!:string;
+    path!: string;
 
     @Column()
     @IsString()
     @Index()
-    contentType!:string;
- 
-    @Column(() => Digest)
-    digests!: Digest;
+    contentType!: string;
 
-    @Column(() => Ref)
-    ref!: Ref;
+    @Column(() => DigestDTO)
+    digests!: DigestDTO;
 
-    
+    @Column(() => RefDTO)
+    ref!: RefDTO;
+
     @Column()
     @IsString()
     @Index()
-    title!:string;
+    title!: string;
 
-    
     @Column()
     @IsString()
     @Index()
-    url!:string;
+    url!: string;
 
-    
     @Column()
     @IsString()
     @Index()
-    httpMethod!:string;
+    httpMethod!: string;
 
-    
     @Column()
     @IsString()
     @Index()
-    secret!:string;
-    
+    secret!: string;
+
     @IsOptional()
     @IsString()
     x_amz_version_id?: string;
-    
+
     @IsOptional()
     @ManyToOne(() => Notification, (notification) => notification.documents)
     notificationId?: Notification;
