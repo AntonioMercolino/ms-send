@@ -9,6 +9,7 @@ import { Recipient } from "../entities/recipient.entity";
 import { Document } from "../entities/document.entity";
 import { paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 
+
 @Injectable()
 export class NotificationService {
     private readonly logger = new Logger(NotificationService.name);
@@ -57,51 +58,69 @@ export class NotificationService {
 
     }
 
-    // async find(query: PaginateQuery): Promise<Paginated<Notification> | undefined> {
-    //     try {
-    //         return await paginate(query, this.notificationRepository, {
-    //             sortableColumns: [
-    //                 'id',
-    //                 'updatedAt',
-    //                 'createdAt',
-    //                 'toBeSent',
-    //                 'errors',
-    //                 'nextSendingTime',
-    //                 'paProtocolNumber',
-    //                 'subject',
-    //                 'abstract',
-    //                 'taxonomyCode',
-    //                 'notificationFeePolicy',
-    //                 'senderTaxId',
-    //                 'senderDenomination',
-    //                 'group',
-    //                 'physicalCommunicationType',
-    //                 'vat',
-    //                 'paFree',
-    //                 'paymentExpirationDate',
-    //                 'amount',
-    //                 'cancelledIun',
-    //                 'documents',
-    //                 'recipient'
-    //             ],
-    //             filterableColumns: {
-    //                 'id': true,
-    //                 'updatedAt': true,
-    //                 'createdAt': true,
-    //                 'name': true,
-    //                 'code': true,
-    //                 'isEnabled': true,
-    //                 'documents(':true,
-    //                 'recipient(': true
-    //             },
-    //             searchableColumns: ["createdAt", "updatedAt", "id", "name", "code", "isEnabled"],
-    //             select: ["createdAt", "updatedAt", "id", "name", "code", "isEnabled"],
-    //             defaultSortBy: [['id', 'ASC']],
-    //         });
-    //     } catch (e) {
-    //         this.logger.error(e);
-    //         return undefined;
-    //     }
-    // }
-
+    async find(query: PaginateQuery): Promise<Paginated<Notification> | undefined> {
+        try {
+            return await paginate(query, this.notificationRepository, {
+                sortableColumns: [
+                    'id',
+                    'updatedAt',
+                    'createdAt',
+                    'toBeSent',
+                    'errors',
+                    'nextSendingTime',
+                    'paProtocolNumber',
+                    'subject',
+                    'abstract',
+                    'taxonomyCode',
+                    'notificationFeePolicy',
+                    'senderTaxId',
+                    'senderDenomination',
+                    'group',
+                    'physicalCommunicationType',
+                    'vat',
+                    'paFree',
+                    'paymentExpirationDate',
+                    'amount',
+                    'cancelledIun',
+                    'documents',
+                    'recipient'
+                ],
+                filterableColumns: {
+                    'id': true,
+                    'updatedAt': true,
+                    'createdAt': true,
+                    'name': true,
+                    'code': true,
+                    'isEnabled': true,
+                    'documents(': true,
+                    'recipient(': true
+                },
+                searchableColumns: ["id", "updatedAt", "createdAt", "toBeSent", "errors", "nextSendingTime", "paProtocolNumber", "subject", "abstract", "taxonomyCode", "notificationFeePolicy",
+                    "senderTaxId", "senderDenomination", "group", "physicalCommunicationType", "vat", "paFree", "paymentExpirationDate", "amount", "cancelledIun", "documents", "recipient"],
+                select: ["id", "updatedAt", "createdAt", "toBeSent", "errors", "nextSendingTime", "paProtocolNumber", "subject", "abstract", "taxonomyCode", "notificationFeePolicy",
+                    "senderTaxId", "senderDenomination", "group", "physicalCommunicationType", "vat", "paFree", "paymentExpirationDate", "amount", "cancelledIun", "documents", "recipient"],
+                defaultSortBy: [['id', 'ASC']],
+            });
+        } catch (e) {
+            this.logger.error(e);
+            return undefined;
+        }
+    }
+    @Transactional()
+    async delete(notificationId: string): Promise<Notification> {
+        const notification = await this.notificationRepository.findOne({
+            where: { id: notificationId },
+            relations: { documents: true, recipient: true },
+        });
+        if (!notification)
+            throw new Error(`Notification with ID ${notificationId} not found`);
+        //da rivedere
+        if (notification.documents && notification.documents.length > 0)
+            throw new Error(`Notification with ID ${notificationId} cannot be deleted because it has associated document`);
+        //Delete
+        let result = await this.notificationRepository.delete(notificationId);
+        if (result.affected === 0)
+            throw new Error(`Notification with ID ${notificationId} not found`);
+        return notification;
+    }
 }
