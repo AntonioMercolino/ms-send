@@ -7,6 +7,7 @@ import { Transactional } from "typeorm-transactional";
 import { Notification } from "../entities/notification.entity";
 import { Recipient } from "../entities/recipient.entity";
 import { Document } from "../entities/document.entity";
+import { paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 
 
 @Injectable()

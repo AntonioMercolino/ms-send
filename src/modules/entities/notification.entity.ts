@@ -1,9 +1,8 @@
-import { IsArray, IsBoolean, IsDate, IsNumber, IsOptional, IsString } from "class-validator";
-import { CustomBaseEntity } from "src/shared-modules/database/entities/custom-base-entity.config";
+import { IsBoolean, IsDate, IsNumber, IsOptional, IsString } from "class-validator";
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { isDate } from "util/types";
 import { Document } from "../entities/document.entity";
 import { Recipient } from "./recipient.entity";
+import { CustomBaseEntity } from "src/shared-modules/database/entities/custom-base-entity.config";
 
 @Entity()
 export class Notification extends CustomBaseEntity {

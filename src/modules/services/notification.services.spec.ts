@@ -3,7 +3,12 @@ import { NotificationService } from "./notification.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Recipient } from "../entities/recipient.entity";
 import { Notification } from "../entities/notification.entity";
-
+import { PaymentDTO } from "../dtos/payment.dto";
+import { DigitalDomicileDTO } from "../dtos/digitalDomicile.dto";
+import { PhysicalAddressDTO } from "../dtos/physicalAdress.dto";
+import { Document } from "../entities/document.entity"
+import { DigestDTO } from "../dtos/digest.dto";
+import { RefDTO } from "../dtos/ref.dto";
 jest.mock('typeorm-transactional', () => ({
     Transactional: () => () => ({}),
   }));
@@ -36,38 +41,53 @@ jest.mock('typeorm-transactional', () => ({
 //SAVE OR UPDDATE
 it('Should save or update an Country', async () => {
 
+
+
     let recipient: Recipient = {
         taxId: "",
         denomination: "",
         recipientType: "",
         internalId: "",
-        physicalAddress: new PhysicalAddress,
-        digitalDomicile: new DigitalDomicile,
+        physicalAddress: new PhysicalAddressDTO,
+        digitalDomicile: new DigitalDomicileDTO,
         notificationId: "",
-        payments: new Payment
+        payments: new PaymentDTO
     }
-
+  
+    let document: Document= {
+        path: "",
+        contentType: "",
+        digests: new DigestDTO,
+        ref: new RefDTO,
+        title: "",
+        url: "",
+        httpMethod: "",
+        secret: ""
+    }
 
     let notificationData: Notification = {
         toBeSent: false,
         errors: [],
         nextSendingTime: new Date,
         paProtocolNumber: "123",
-        subject: "",
-        abstract: "",
-        taxonomyCode: "",
-        notificationFeePolicy: "",
-        senderTaxId: "",
-        senderDenomination: "",
-        group: "",
-        physicalCommunicationType: "",
+        subject: "122",
+        abstract: "222",
+        taxonomyCode: "333",
+        notificationFeePolicy: "FAKE",
+        senderTaxId: "543",
+        senderDenomination: "FF",
+        group: "AA",
+        physicalCommunicationType: "SC",
         vat: 0,
         paFree: 0,
-        paymentExpirationDate: "",
+        paymentExpirationDate: "FA",
         amount: 0,
-        cancelledIun: "",
+        cancelledIun: "123",
         recipient: [recipient],
-        documents: []
+        documents: [document]
+    };
+    let notification: Notification | undefined = await notificationService.saveOrUpdate(notificationData);
+            expect(notification).toBeDefined();
     })
 
   })
