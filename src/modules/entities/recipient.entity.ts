@@ -11,10 +11,6 @@ import { DigitalDomicile } from "./digitalDomicile.entity";
 
 Entity()
 export class Recipient extends CustomBaseEntity {
-    @Column()
-    @IsString()
-    @Index()
-    notificationId!:string;
 
     @Column()
     @IsString()
@@ -43,12 +39,10 @@ export class Recipient extends CustomBaseEntity {
     digitalDomicile!:DigitalDomicile;
 
 
-    @ManyToOne(() => Notification, (notification) => notification.recipients)
-    notification!: Notification;
+    @ManyToOne(() => Notification, (notification) => notification.recipient)
+    notificationId!: string;
 
-    @OneToMany(() => Payment, (payment) => payment.recipient)
-    payments!: Payment[];
-
-
-
+    @Column()
+    @Index()
+    payments!: Payment;
 }

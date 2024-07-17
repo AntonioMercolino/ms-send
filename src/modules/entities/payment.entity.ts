@@ -16,5 +16,5 @@ export class Payment {
     f24!: F24DTO;
 
     @ManyToOne(() => Recipient, (recipient) => recipient.payments)
-    recipient!: Recipient;
+    recipientId!: Recipient;
 }

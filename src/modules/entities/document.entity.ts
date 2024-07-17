@@ -13,11 +13,6 @@ export class Document extends CustomBaseEntity {
     @Column()
     @IsString()
     @Index()
-    notificationId!:string;
-
-    @Column()
-    @IsString()
-    @Index()
     path!:string;
 
     @Column()
@@ -60,6 +55,6 @@ export class Document extends CustomBaseEntity {
     x_amz_version_id?: string;
     
     @IsOptional()
-    @ManyToOne(() => Notification, (notification) => notification.document)
-    notification?: Notification;
+    @ManyToOne(() => Notification, (notification) => notification.documents)
+    notificationId?: Notification;
 }

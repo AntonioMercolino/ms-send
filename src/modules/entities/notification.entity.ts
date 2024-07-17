@@ -96,11 +96,11 @@ export class Notification extends CustomBaseEntity {
     cancelledIun!:string;
     
     @IsOptional()
-    @OneToMany((type) => Document, (document) =>document.notification)
-    document?: Document[];
+    @OneToMany((type) => Document, (document) =>document.notificationId)
+    documents?: Document[];
 
-    @OneToMany(() => Recipient, (recipient) => recipient.notification)
-    recipients!: Recipient[];
+    @OneToMany(() => Recipient, (recipient) => recipient.notificationId)
+    recipient!: Recipient[];
 }
 
 
