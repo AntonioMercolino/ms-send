@@ -1,7 +1,7 @@
 import { IsString } from "class-validator";
-import { CustomBaseEntity } from "src/shared-modules/database/entities/custom-base-entity.config";
+import { CustomBaseEntity } from "../../../shared-modules/database/entities/custom-base-entity.config";
 import { Column, Entity, Index, ManyToOne, OneToMany } from "typeorm";
-import { Notification } from "../entities/notification.entity";
+import { Notification } from "./notification.entity";
 import { DigitalDomicileDTO } from "../dtos/digitalDomicile.dto";
 import { PhysicalAddressDTO } from "../dtos/physicalAdress.dto";
 import { PaymentDTO } from "../dtos/payment.dto";

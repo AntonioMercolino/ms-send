@@ -1,8 +1,8 @@
 import { IsBoolean, IsDate, IsNumber, IsOptional, IsString } from "class-validator";
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { Document } from "../entities/document.entity";
+import { Document } from "./document.entity";
 import { Recipient } from "./recipient.entity";
-import { CustomBaseEntity } from "src/shared-modules/database/entities/custom-base-entity.config";
+import { CustomBaseEntity } from "../../../shared-modules/database/entities/custom-base-entity.config";
 
 @Entity()
 export class Notification extends CustomBaseEntity {
@@ -94,7 +94,8 @@ export class Notification extends CustomBaseEntity {
     @IsOptional()
     @OneToMany((type) => Document, (document) => document.notificationId)
     documents?: Document[];
-
+    
     @OneToMany(() => Recipient, (recipient) => recipient.notificationId)
     recipient!: Recipient[];
+    
 }

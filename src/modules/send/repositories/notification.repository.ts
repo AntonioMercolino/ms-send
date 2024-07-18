@@ -2,6 +2,7 @@ import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Notification} from "../entities/notification.entity";
 
+
 export class NotificationRepository extends Repository<Notification> {
     constructor(
         @InjectRepository(Notification)

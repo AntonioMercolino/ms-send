@@ -1,7 +1,7 @@
 import { IsOptional, IsString } from "class-validator";
-import { CustomBaseEntity } from "src/shared-modules/database/entities/custom-base-entity.config";
+import { CustomBaseEntity } from "../../../shared-modules/database/entities/custom-base-entity.config";
 import { Column, Entity, Index, ManyToOne } from "typeorm";
-import { Notification } from "../entities/notification.entity";
+import { Notification } from "./notification.entity";
 import { RefDTO } from "../dtos/ref.dto";
 import { DigestDTO } from "../dtos/digest.dto";
 
