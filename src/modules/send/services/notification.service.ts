@@ -34,7 +34,7 @@ export class NotificationService {
             }
         }
         //Update recipient
-        if (notification.recipient) {
+       if (notification.recipient) {
             for (const recipient of notification.recipient) {
                 recipientToUpdate = await this.recipientRepository.findOneBy({ id: recipient.id });
                 if (!recipientToUpdate) {
@@ -101,13 +101,14 @@ export class NotificationService {
                     "senderTaxId", "senderDenomination", "group", "physicalCommunicationType", "vat", "paFree", "paymentExpirationDate", "amount", "cancelledIun", "documents", "recipient"],
                 defaultSortBy: [['id', 'ASC']],
             });
+            return undefined;
         } catch (e) {
             this.logger.error(e);
             return undefined;
         }
     }
     @Transactional()
-    async delete(notificationId: string): Promise<Notification> {
+    async delete(notificationId: string): Promise<Notification | undefined> {
         const notification = await this.notificationRepository.findOne({
             where: { id: notificationId },
             relations: { documents: true, recipient: true },

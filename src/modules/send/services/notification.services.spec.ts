@@ -24,40 +24,45 @@ jest.mock('typeorm-transactional', () => ({
 describe('NotificationService', () => {
     let notificationService: NotificationService;
     let notificationRepository: NotificationRepository;
-    //  let documentRepository: DocumentRepository;
-    // let recipientRepository: RecipientRepository;
-
+    let recipientRepository: RecipientRepository;
+    let documentRepository: DocumentRepository;
+  
     beforeEach(async () => {
-        const module = await Test.createTestingModule({
-            imports: [
-                //create an in-memory datastore for testing repository access
-                TypeOrmModule.forRoot({
-                    type: 'sqlite',
-                    database: ':memory',
-                    entities: [Notification, Document, Recipient],
-                    logging: true,
-                    dropSchema: true,
-                    synchronize: true,
-                }),
-                TypeOrmModule.forFeature([Notification, Document, Recipient ]),//register db entities
-            ],
-            providers: [NotificationService],
-        }).compile();
-        notificationService = module.get<NotificationService>(NotificationService);
-        notificationRepository = module.get<NotificationRepository>(NotificationRepository);
-
+      const module = await Test.createTestingModule({
+        imports: [
+          TypeOrmModule.forRoot({
+            type: 'sqlite',
+            database: ':memory:', // Utilizza un database in memoria
+            entities: [Notification, Document, Recipient],
+            logging: true,
+            dropSchema: true,
+            synchronize: true,
+          }),
+          TypeOrmModule.forFeature([Notification, Document, Recipient]),
+        ],
+        providers: [
+          NotificationService,
+          NotificationRepository,
+          RecipientRepository,
+          DocumentRepository,
+        ],
+      }).compile();
+  
+      notificationService = module.get<NotificationService>(NotificationService);
+      notificationRepository = module.get<NotificationRepository>(NotificationRepository);
+      recipientRepository = module.get<RecipientRepository>(RecipientRepository);
+      documentRepository = module.get<DocumentRepository>(DocumentRepository);
     });
+  
     it('should be defined', () => {
-        expect(notificationService).toBeDefined();
-        //expect(notificationRepository).toBeDefined();
-
+      expect(notificationService).toBeDefined();
+      expect(notificationRepository).toBeDefined();
+      expect(recipientRepository).toBeDefined();
+      expect(documentRepository).toBeDefined();
     });
-    /*
+    
     //SAVE OR UPDDATE
     it('Should save or update an Country', async () => {
-    
-    
-    
         let recipient: Recipient = {
             taxId: "",
             denomination: "",
@@ -77,7 +82,8 @@ describe('NotificationService', () => {
             title: "",
             url: "",
             httpMethod: "",
-            secret: ""
+            secret: "",
+            notificationId: ""
         }
     
         let notificationData: Notification = {
@@ -156,7 +162,8 @@ describe('NotificationService', () => {
                 title: "",
                 url: "",
                 httpMethod: "",
-                secret: ""
+                secret: "",
+                notificationId: ""
             }
             let recipient: Recipient = {
                 taxId: "",
@@ -204,5 +211,5 @@ describe('NotificationService', () => {
         }
     
         });
-    */
+    
 })

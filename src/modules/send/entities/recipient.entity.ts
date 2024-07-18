@@ -1,4 +1,4 @@
-import { IsString } from "class-validator";
+import { IsOptional, IsString } from "class-validator";
 import { CustomBaseEntity } from "../../../shared-modules/database/entities/custom-base-entity.config";
 import { Column, Entity, Index, ManyToOne, OneToMany } from "typeorm";
 import { Notification } from "./notification.entity";
@@ -6,8 +6,8 @@ import { DigitalDomicileDTO } from "../dtos/digitalDomicile.dto";
 import { PhysicalAddressDTO } from "../dtos/physicalAdress.dto";
 import { PaymentDTO } from "../dtos/payment.dto";
 
-Entity()
-export class Recipient extends CustomBaseEntity {
+@Entity()
+export class  Recipient extends CustomBaseEntity {
 
     @Column()
     @IsString()
@@ -34,11 +34,12 @@ export class Recipient extends CustomBaseEntity {
 
     @Column(() => DigitalDomicileDTO)
     digitalDomicile!: DigitalDomicileDTO;
+    
 
     @ManyToOne(() => Notification, (notification) => notification.recipient)
     notificationId!: string;
 
-    @Column()
+    @Column('simple-json')
     @Index()
     payments!: PaymentDTO;
 }

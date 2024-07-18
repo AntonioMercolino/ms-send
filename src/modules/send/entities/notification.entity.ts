@@ -12,8 +12,7 @@ export class Notification extends CustomBaseEntity {
     @Index()
     toBeSent!: boolean;
 
-    @Column()
-    @Index()
+    @Column('simple-json', { default: '[]' })
     errors!: string[];
 
     @Column()
@@ -94,8 +93,9 @@ export class Notification extends CustomBaseEntity {
     @IsOptional()
     @OneToMany((type) => Document, (document) => document.notificationId)
     documents?: Document[];
-    
+
+    @IsOptional()
     @OneToMany(() => Recipient, (recipient) => recipient.notificationId)
-    recipient!: Recipient[];
+    recipient?: Recipient[];
     
 }
