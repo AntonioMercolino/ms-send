@@ -19,197 +19,217 @@ import { PagoPaDTO } from "../dtos/pagoPa.dto";
 
 
 jest.mock('typeorm-transactional', () => ({
-    Transactional: () => () => ({}),
+  Transactional: () => () => ({}),
 }));
 describe('NotificationService', () => {
-    let notificationService: NotificationService;
-    let notificationRepository: NotificationRepository;
-    let recipientRepository: RecipientRepository;
-    let documentRepository: DocumentRepository;
-  
-    beforeEach(async () => {
-      const module = await Test.createTestingModule({
-        imports: [
-          TypeOrmModule.forRoot({
-            type: 'sqlite',
-            database: ':memory:', // Utilizza un database in memoria
-            entities: [Notification, Document, Recipient],
-            logging: true,
-            dropSchema: true,
-            synchronize: true,
-          }),
-          TypeOrmModule.forFeature([Notification, Document, Recipient]),
-        ],
-        providers: [
-          NotificationService,
-          NotificationRepository,
-          RecipientRepository,
-          DocumentRepository,
-        ],
-      }).compile();
-  
-      notificationService = module.get<NotificationService>(NotificationService);
-      notificationRepository = module.get<NotificationRepository>(NotificationRepository);
-      recipientRepository = module.get<RecipientRepository>(RecipientRepository);
-      documentRepository = module.get<DocumentRepository>(DocumentRepository);
+  let notificationService: NotificationService;
+  let notificationRepository: NotificationRepository;
+  let recipientRepository: RecipientRepository;
+  let documentRepository: DocumentRepository;
+
+  beforeEach(async () => {
+    const module = await Test.createTestingModule({
+      imports: [
+        TypeOrmModule.forRoot({
+          type: 'sqlite',
+          database: ':memory:', // Utilizza un database in memoria
+          entities: [Notification, Document, Recipient],
+          logging: true,
+          dropSchema: true,
+          synchronize: true,
+        }),
+        TypeOrmModule.forFeature([Notification, Document, Recipient]),
+      ],
+      providers: [
+        NotificationService,
+        NotificationRepository,
+        RecipientRepository,
+        DocumentRepository,
+      ],
+    }).compile();
+
+    notificationService = module.get<NotificationService>(NotificationService);
+    notificationRepository = module.get<NotificationRepository>(NotificationRepository);
+    recipientRepository = module.get<RecipientRepository>(RecipientRepository);
+    documentRepository = module.get<DocumentRepository>(DocumentRepository);
+  });
+
+  it('should be defined', () => {
+    expect(notificationService).toBeDefined();
+    expect(notificationRepository).toBeDefined();
+    expect(recipientRepository).toBeDefined();
+    expect(documentRepository).toBeDefined();
+  });
+
+  //SAVE OR UPDDATE
+  it('Should save or update an Country', async () => {
+    let notificationData: Notification = {
+      toBeSent: false,
+      errors: [],
+      nextSendingTime: new Date,
+      paProtocolNumber: "123",
+      subject: "122",
+      abstract: "222",
+      taxonomyCode: "333",
+      notificationFeePolicy: "FAKE",
+      senderTaxId: "543",
+      senderDenomination: "FF",
+      group: "AA",
+      physicalCommunicationType: "SC",
+      vat: 0,
+      paFree: 0,
+      paymentExpirationDate: "FA",
+      amount: 0,
+      cancelledIun: "123",
+      documents: [],
+      recipient: []
+    };
+    let recipientData: Recipient = {
+      taxId: "TEST",
+      denomination: "TEST",
+      recipientType: "TEST",
+      internalId: "TEST",
+      physicalAddress: new PhysicalAddressDTO,
+      digitalDomicile: new DigitalDomicileDTO,
+      payments: new PaymentDTO,
+      notificationId: notificationData
+    }
+    let documentData: Document = {
+      path: "TEST",
+      contentType: "TEST",
+      digests: new DigestDTO,
+      ref: new RefDTO,
+      title: "TEST",
+      url: "TEST",
+      httpMethod: "TEST",
+      secret: "TEST",
+      notificationId: notificationData
+    }
+    notificationData.documents = [documentData];
+    notificationData.recipient = [recipientData];
+    let notification: Notification | undefined = await notificationService.saveOrUpdate(notificationData);
+    expect(notification).toBeDefined();
+
+    notification.subject = "TestUpdate"
+    recipientData.taxId = "TestUpdate";
+    documentData.path = "Update";
+    notification.documents = [documentData];
+    notification.recipient = [recipientData];
+    let notificationUpdate: Notification | undefined = await notificationService.saveOrUpdate(notification);
+    console.log("Notifications:", notificationUpdate);
+    expect(notificationUpdate).toBeDefined();
+
+  });
+  //FIND
+  it('should find and return Notification', async () => {
+    let notificationData: Notification = {
+      toBeSent: false,
+      errors: [],
+      nextSendingTime: new Date,
+      paProtocolNumber: "123",
+      subject: "122",
+      abstract: "222",
+      taxonomyCode: "333",
+      notificationFeePolicy: "FAKE",
+      senderTaxId: "543",
+      senderDenomination: "FF",
+      group: "AA",
+      physicalCommunicationType: "SC",
+      vat: 0,
+      paFree: 0,
+      paymentExpirationDate: "FA",
+      amount: 0,
+      cancelledIun: "123",
+      documents: [],
+      recipient: []
+    };
+    let recipientData: Recipient = {
+      taxId: "TEST",
+      denomination: "TEST",
+      recipientType: "TEST",
+      internalId: "TEST",
+      physicalAddress: new PhysicalAddressDTO,
+      digitalDomicile: new DigitalDomicileDTO,
+      payments: new PaymentDTO,
+      notificationId: notificationData
+    }
+    let documentData: Document = {
+      path: "TEST",
+      contentType: "TEST",
+      digests: new DigestDTO,
+      ref: new RefDTO,
+      title: "TEST",
+      url: "TEST",
+      httpMethod: "TEST",
+      secret: "TEST",
+      notificationId: notificationData
+    }
+    notificationData.documents = [documentData];
+    notificationData.recipient = [recipientData];
+    let notification: Notification | undefined = await notificationService.saveOrUpdate(notificationData);
+    expect(notification).toBeDefined();
+
+    let query: PaginateQuery = { path: 'http://localhost', filter: { paProtocolNumber: "$ilike:123" }, select: [] };
+    let notifications: Paginated<Notification> | undefined = await notificationService.find(query);
+    expect(notification).toBeDefined();
+    expect(notifications?.data.length).toEqual(1);
+  });
+  // DELETE if the notification has associated document  @return: undefined
+  it('not should delete a notification', async () => {
+    let notificationData: Notification = {
+      toBeSent: false,
+      errors: [],
+      nextSendingTime: new Date,
+      paProtocolNumber: "123",
+      subject: "122",
+      abstract: "222",
+      taxonomyCode: "333",
+      notificationFeePolicy: "FAKE",
+      senderTaxId: "543",
+      senderDenomination: "FF",
+      group: "AA",
+      physicalCommunicationType: "SC",
+      vat: 0,
+      paFree: 0,
+      paymentExpirationDate: "FA",
+      amount: 0,
+      cancelledIun: "123",
+      documents: [],
+      recipient: []
+    };
+    let paymentDTOData: PaymentDTO ={
+      pagoPa: new PagoPaDTO,
+      f24: new F24DTO
+    }
+    let recipientData: Recipient = {
+      taxId: "TEST",
+      denomination: "TEST",
+      recipientType: "TEST",
+      internalId: "TEST",
+      physicalAddress: new PhysicalAddressDTO,
+      digitalDomicile: new DigitalDomicileDTO,
+      payments: paymentDTOData,
+      notificationId: notificationData
+    }
+    let documentData: Document = {
+      path: "TEST",
+      contentType: "TEST",
+      digests: new DigestDTO,
+      ref: new RefDTO,
+      title: "TEST",
+      url: "TEST",
+      httpMethod: "TEST",
+      secret: "TEST",
+      notificationId: notificationData
+    }
+    notificationData.documents = [documentData];
+    notificationData.recipient = [recipientData];
+    let notification: Notification | undefined = await notificationService.saveOrUpdate(notificationData);
+    // Tenta di eliminare la notifica
+    if(notification.id){
+      let notificationDelete = await notificationService.delete(notification.id);
+      expect(notificationDelete).toBeDefined();
+      expect(notificationDelete!.id).toEqual(notification.id);
+}
     });
-  
-    it('should be defined', () => {
-      expect(notificationService).toBeDefined();
-      expect(notificationRepository).toBeDefined();
-      expect(recipientRepository).toBeDefined();
-      expect(documentRepository).toBeDefined();
-    });
-    
-    //SAVE OR UPDDATE
-    it('Should save or update an Country', async () => {
-        let recipient: Recipient = {
-            taxId: "",
-            denomination: "",
-            recipientType: "",
-            internalId: "",
-            physicalAddress: new PhysicalAddressDTO,
-            digitalDomicile: new DigitalDomicileDTO,
-            notificationId: "",
-            payments: new PaymentDTO
-        }
-      
-        let document: Document= {
-            path: "",
-            contentType: "",
-            digests: new DigestDTO,
-            ref: new RefDTO,
-            title: "",
-            url: "",
-            httpMethod: "",
-            secret: "",
-            notificationId: ""
-        }
-    
-        let notificationData: Notification = {
-            toBeSent: false,
-            errors: [],
-            nextSendingTime: new Date,
-            paProtocolNumber: "123",
-            subject: "122",
-            abstract: "222",
-            taxonomyCode: "333",
-            notificationFeePolicy: "FAKE",
-            senderTaxId: "543",
-            senderDenomination: "FF",
-            group: "AA",
-            physicalCommunicationType: "SC",
-            vat: 0,
-            paFree: 0,
-            paymentExpirationDate: "FA",
-            amount: 0,
-            cancelledIun: "123",
-            recipient: [recipient],
-            documents: [document]
-        };
-        let notification: Notification | undefined = await notificationService.saveOrUpdate(notificationData);
-                expect(notification).toBeDefined();
-        });
-        //FIND
-        it('should find and return Notification', async () => {
-            
-            let recipient: Recipient = {
-                taxId: "",
-                denomination: "",
-                recipientType: "",
-                internalId: "",
-                physicalAddress: new PhysicalAddressDTO,
-                digitalDomicile: new DigitalDomicileDTO,
-                notificationId: "",
-                payments: new PaymentDTO
-            }
-            let notificationData: Notification = {
-                toBeSent: false,
-                errors: [],
-                nextSendingTime: new Date,
-                paProtocolNumber: "123",
-                subject: "122",
-                abstract: "222",
-                taxonomyCode: "333",
-                notificationFeePolicy: "FAKE",
-                senderTaxId: "543",
-                senderDenomination: "FF",
-                group: "AA",
-                physicalCommunicationType: "SC",
-                vat: 0,
-                paFree: 0,
-                paymentExpirationDate: "FA",
-                amount: 0,
-                cancelledIun: "123",
-                recipient: [recipient]
-            };
-            
-            
-            let notification: Notification | undefined = await notificationService.saveOrUpdate(notificationData);
-            let query: PaginateQuery = { path: 'http://localhost',filter:{paProtocolNumber:"$ilike:123"}, select:['id']};
-            let notifications: Paginated<Notification> | undefined = await notificationService.find(query);
-            expect(notification).toBeDefined();
-            expect(notifications?.data.length).toEqual(1);
-        });
-         // DELETE if the notification has associated document  @return: undefined
-         it('not should delete a notification if has associated regions', async () => {
-    
-            let document: Document= {
-                path: "",
-                contentType: "",
-                digests: new DigestDTO,
-                ref: new RefDTO,
-                title: "",
-                url: "",
-                httpMethod: "",
-                secret: "",
-                notificationId: ""
-            }
-            let recipient: Recipient = {
-                taxId: "",
-                denomination: "",
-                recipientType: "",
-                internalId: "",
-                physicalAddress: new PhysicalAddressDTO,
-                digitalDomicile: new DigitalDomicileDTO,
-                notificationId: "",
-                payments: new PaymentDTO
-            }
-            let notificationData: Notification = {
-                toBeSent: false,
-                errors: [],
-                nextSendingTime: new Date,
-                paProtocolNumber: "123",
-                subject: "122",
-                abstract: "222",
-                taxonomyCode: "333",
-                notificationFeePolicy: "FAKE",
-                senderTaxId: "543",
-                senderDenomination: "FF",
-                group: "AA",
-                physicalCommunicationType: "SC",
-                vat: 0,
-                paFree: 0,
-                paymentExpirationDate: "FA",
-                amount: 0,
-                cancelledIun: "123",
-                recipient: [recipient]
-            };
-             // Salva la notifica e il documento associato
-        let savedNotification: Notification | undefined = await notificationService.saveOrUpdate(notificationData);
-        
-        
-        expect(savedNotification).toBeDefined();
-        
-    
-        if (savedNotification?.id && document?.id) {
-          // Associa il documento alla notifica (questa parte dipende dalla tua logica applicativa)
-          savedNotification.documents = [document];
-    
-          // Tenta di eliminare la notifica
-          await expect(notificationService.delete(savedNotification.id)).rejects.toThrow(new Error(`Notification with ID ${savedNotification.id} cannot be deleted because it has associated documents`));
-        }
-    
-        });
-    
 })

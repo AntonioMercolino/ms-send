@@ -26,41 +26,63 @@ export class NotificationService {
         let notificationToUpdate: Notification | null;
         let recipientToUpdate: Recipient | null;
         let documentToUpdate: Document | null;
+
         //UPDATE notification 
         if (notification.id) {
             notificationToUpdate = await this.notificationRepository.findOneBy({ id: notification.id });
             if (!notificationToUpdate) {
                 throw new Error("It's not possible to update ");
             }
-        }
-        //Update recipient
-       if (notification.recipient) {
-            for (const recipient of notification.recipient) {
-                recipientToUpdate = await this.recipientRepository.findOneBy({ id: recipient.id });
-                if (!recipientToUpdate) {
-                    throw new Error("It's not possible to update recipient");
-                }
-                await this.recipientRepository.save(recipient);
-            }
-        }
-        //Update documents
-        if (notification.documents) {
-            for (const document of notification.documents) {
-                documentToUpdate = await this.documentRepository.findOneBy({ id: document.id });
-                if (!documentToUpdate) {
-                    throw new Error("It's not possible to update document");
-                }
-                await this.documentRepository.save(document);
-            }
-        }
-        //SAVE CASE
-        return this.notificationRepository.save(notification);
 
+            //Update recipient
+            if (notification.recipient) {
+                for (const recipient of notification.recipient) {
+                    recipientToUpdate = await this.recipientRepository.findOneBy({ id: recipient.id });
+                    if (!recipientToUpdate) {
+                        throw new Error("It's not possible to update recipient");
+                    }
+                    await this.recipientRepository.save(recipient);
+                }
+            }
+            //Update documents
+            if (notification.documents) {
+                for (const document of notification.documents) {
+                    documentToUpdate = await this.documentRepository.findOneBy({ id: document.id });
+                    if (!documentToUpdate) {
+                        throw new Error("It's not possible to update document");
+                    }
+                    await this.documentRepository.save(document);
+                }
+            }
+            return notificationToUpdate;
+        } else {
+            let notificationSaved = this.notificationRepository.save(notification);
+            if (notification.recipient) {
+                for (const recipient of notification.recipient) {
+                    let recipientSave = await this.recipientRepository.save(recipient);
+                    if (!recipientSave) {
+                        throw new Error("It's not possible to Save recipient id: " + recipient.id);
+                    }
+                }
+            }
+            if (notification.documents) {
+                for (const document of notification.documents) {
+                    let documentSave = await this.documentRepository.save(document);
+                    if (!documentSave) {
+                        throw new Error("It's not possible to Save document id: " + document.id);
+                    }
+                }
+            }
+            //SAVE CASE
+            return notificationSaved;
+        }
     }
 
     async find(query: PaginateQuery): Promise<Paginated<Notification> | undefined> {
         try {
-            return await paginate(query, this.notificationRepository, {
+            return await paginate(query, this.notificationRepository.createQueryBuilder('notification')
+                .leftJoinAndSelect('notification.documents', 'documents')
+                .leftJoinAndSelect('notification.recipient', 'recipient'), {
                 sortableColumns: [
                     'id',
                     'updatedAt',
@@ -95,13 +117,10 @@ export class NotificationService {
                     'documents(': true,
                     'recipient(': true
                 },
-                searchableColumns: ["id", "updatedAt", "createdAt", "toBeSent", "errors", "nextSendingTime", "paProtocolNumber", "subject", "abstract", "taxonomyCode", "notificationFeePolicy",
-                    "senderTaxId", "senderDenomination", "group", "physicalCommunicationType", "vat", "paFree", "paymentExpirationDate", "amount", "cancelledIun", "documents", "recipient"],
-                select: ["id", "updatedAt", "createdAt", "toBeSent", "errors", "nextSendingTime", "paProtocolNumber", "subject", "abstract", "taxonomyCode", "notificationFeePolicy",
-                    "senderTaxId", "senderDenomination", "group", "physicalCommunicationType", "vat", "paFree", "paymentExpirationDate", "amount", "cancelledIun", "documents", "recipient"],
+                searchableColumns: [],
+                select: [],
                 defaultSortBy: [['id', 'ASC']],
             });
-            return undefined;
         } catch (e) {
             this.logger.error(e);
             return undefined;
@@ -116,8 +135,22 @@ export class NotificationService {
         if (!notification)
             throw new Error(`Notification with ID ${notificationId} not found`);
         //da rivedere
-        if (notification.documents && notification.documents.length > 0)
-            throw new Error(`Notification with ID ${notificationId} cannot be deleted because it has associated document`);
+        if (notification.documents && notification.documents.length > 0) {
+            for (const document of notification.documents) {
+                let documentDelete = await this.documentRepository.delete(document);
+                if (!documentDelete) {
+                    throw new Error("It's not possible to Delete document id: " + document.id);
+                }
+            }
+        }
+        if (notification.recipient && notification.recipient.length > 0) {
+            for (const recipient of notification.recipient) {
+                let documentSave = await this.recipientRepository.delete(recipient);
+                if (!documentSave) {
+                    throw new Error("It's not possible to Delete recipient id: " + recipient.id);
+                }
+            }
+        }
         //Delete
         let result = await this.notificationRepository.delete(notificationId);
         if (result.affected === 0)

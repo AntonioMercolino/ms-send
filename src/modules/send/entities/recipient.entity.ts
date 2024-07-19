@@ -35,11 +35,9 @@ export class  Recipient extends CustomBaseEntity {
     @Column(() => DigitalDomicileDTO)
     digitalDomicile!: DigitalDomicileDTO;
     
-
     @ManyToOne(() => Notification, (notification) => notification.recipient)
-    notificationId!: string;
+    notificationId!: Notification;
 
-    @Column('simple-json')
-    @Index()
+    @Column(() => PaymentDTO)
     payments!: PaymentDTO;
 }
