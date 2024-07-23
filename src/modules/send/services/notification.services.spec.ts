@@ -34,7 +34,7 @@ describe('NotificationService', () => {
           type: 'sqlite',
           database: ':memory:', // Utilizza un database in memoria
           entities: [Notification, Document, Recipient],
-          logging: false,
+          logging: true,
           dropSchema: true,
           synchronize: true,
         }),

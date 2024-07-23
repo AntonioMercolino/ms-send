@@ -4,7 +4,6 @@ import { Document } from "./document.entity";
 import { Recipient } from "./recipient.entity";
 import { CustomBaseEntity } from "../../../shared-modules/database/entities/custom-base-entity.config";
 
-
 @Entity()
 export class Notification extends CustomBaseEntity {
 
@@ -92,7 +91,7 @@ export class Notification extends CustomBaseEntity {
     cancelledIun!: string;
 
     @IsOptional()
-    @OneToMany(() => Document, (document) => document.notificationId)
+    @OneToMany((type) => Document, (document) => document.notificationId)
     documents?: Document[];
 
     @IsOptional()
