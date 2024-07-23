@@ -34,7 +34,7 @@ describe('NotificationService', () => {
           type: 'sqlite',
           database: ':memory:', // Utilizza un database in memoria
           entities: [Notification, Document, Recipient],
-          logging: true,
+          logging: false,
           dropSchema: true,
           synchronize: true,
         }),
@@ -85,10 +85,10 @@ describe('NotificationService', () => {
       recipient: []
     };
     let recipientData: Recipient = {
-      taxId: "TEST",
-      denomination: "TEST",
-      recipientType: "TEST",
-      internalId: "TEST",
+      taxId: "TEST Recipient",
+      denomination: "TEST Recipient",
+      recipientType: "TEST Recipient",
+      internalId: "TEST Recipient",
       physicalAddress: new PhysicalAddressDTO,
       digitalDomicile: new DigitalDomicileDTO,
       payments: new PaymentDTO,
@@ -144,10 +144,10 @@ describe('NotificationService', () => {
       recipient: []
     };
     let recipientData: Recipient = {
-      taxId: "TEST",
-      denomination: "TEST",
-      recipientType: "TEST",
-      internalId: "TEST",
+      taxId: "TEST Recipient",
+      denomination: "TEST Recipient",
+      recipientType: "TEST Recipient",
+      internalId: "TEST Recipient",
       physicalAddress: new PhysicalAddressDTO,
       digitalDomicile: new DigitalDomicileDTO,
       payments: new PaymentDTO,
@@ -197,18 +197,14 @@ describe('NotificationService', () => {
       documents: [],
       recipient: []
     };
-    let paymentDTOData: PaymentDTO ={
-      pagoPa: new PagoPaDTO,
-      f24: new F24DTO
-    }
     let recipientData: Recipient = {
-      taxId: "TEST",
-      denomination: "TEST",
-      recipientType: "TEST",
-      internalId: "TEST",
+      taxId: "TEST Recipient",
+      denomination: "TEST Recipient",
+      recipientType: "TEST Recipient",
+      internalId: "TEST Recipient",
       physicalAddress: new PhysicalAddressDTO,
       digitalDomicile: new DigitalDomicileDTO,
-      payments: paymentDTOData,
+      payments: new PaymentDTO,
       notificationId: notificationData
     }
     let documentData: Document = {
@@ -226,10 +222,10 @@ describe('NotificationService', () => {
     notificationData.recipient = [recipientData];
     let notification: Notification | undefined = await notificationService.saveOrUpdate(notificationData);
     // Tenta di eliminare la notifica
-    if(notification.id){
+    if (notification.id) {
       let notificationDelete = await notificationService.delete(notification.id);
       expect(notificationDelete).toBeDefined();
       expect(notificationDelete!.id).toEqual(notification.id);
-}
-    });
+    }
+  });
 })

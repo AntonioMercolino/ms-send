@@ -91,11 +91,17 @@ export class Notification extends CustomBaseEntity {
     cancelledIun!: string;
 
     @IsOptional()
-    @OneToMany((type) => Document, (document) => document.notificationId)
+    @OneToMany((type) => Document, (document) => document.notificationId,{
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE"
+    })
     documents?: Document[];
 
     @IsOptional()
-    @OneToMany(() => Recipient, (recipient) => recipient.notificationId)
+    @OneToMany(() => Recipient, (recipient) => recipient.notificationId,{
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE"
+    })
     recipient?: Recipient[];
     
 }
