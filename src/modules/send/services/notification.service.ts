@@ -8,6 +8,7 @@ import { Notification } from "../entities/notification.entity";
 import { Recipient } from "../entities/recipient.entity";
 import { Document } from "../entities/document.entity";
 import { paginate, Paginated, PaginateQuery } from "nestjs-paginate";
+import { Index } from "typeorm";
 
 
 @Injectable()
@@ -54,9 +55,8 @@ export class NotificationService {
                     await this.documentRepository.save(document);
                 }
             }
-            return notificationToUpdate;
+            return await this.notificationRepository.save(notification);
         } else {
-            let notificationSaved = this.notificationRepository.save(notification);
             if (notification.recipient) {
                 for (const recipient of notification.recipient) {
                     let recipientSave = await this.recipientRepository.save(recipient);
@@ -74,7 +74,7 @@ export class NotificationService {
                 }
             }
             //SAVE CASE
-            return notificationSaved;
+            return this.notificationRepository.save(notification);
         }
     }
 
@@ -134,24 +134,28 @@ export class NotificationService {
         });
         if (!notification)
             throw new Error(`Notification with ID ${notificationId} not found`);
-        //da rivedere
         if (notification.documents && notification.documents.length > 0) {
+            console.log("if document");
             for (const document of notification.documents) {
                 let documentDelete = await this.documentRepository.delete(document);
+                await this.saveOrUpdate(notification);
                 if (!documentDelete) {
                     throw new Error("It's not possible to Delete document id: " + document.id);
                 }
             }
         }
         if (notification.recipient && notification.recipient.length > 0) {
+            console.log("if recipient");
             for (const recipient of notification.recipient) {
-                let documentSave = await this.recipientRepository.delete(recipient);
-                if (!documentSave) {
+                let recipientDelete = await this.recipientRepository.delete(recipient);
+                await this.saveOrUpdate(notification);
+                if (!recipientDelete) {
                     throw new Error("It's not possible to Delete recipient id: " + recipient.id);
                 }
             }
         }
         //Delete
+        console.log("no if");
         let result = await this.notificationRepository.delete(notificationId);
         if (result.affected === 0)
             throw new Error(`Notification with ID ${notificationId} not found`);

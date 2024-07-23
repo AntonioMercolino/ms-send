@@ -35,7 +35,10 @@ export class  Recipient extends CustomBaseEntity {
     @Column(() => DigitalDomicileDTO)
     digitalDomicile!: DigitalDomicileDTO;
     
-    @ManyToOne(() => Notification, (notification) => notification.recipient)
+    @ManyToOne(() => Notification, (notification) => notification.recipient,{
+        onDelete: "CASCADE",
+        onUpdate:"CASCADE"
+    })
     notificationId!: Notification;
 
     @Column(() => PaymentDTO)
