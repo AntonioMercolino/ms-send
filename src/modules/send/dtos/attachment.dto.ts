@@ -4,10 +4,10 @@ import { RefDTO } from './ref.dto';
 
 export class AttachmentDTO {
 
-    digests!: DigestDTO[];
+    digests!: DigestDTO;
 
     @IsOptional()
-    ref?: RefDTO;
+    ref!: RefDTO;
 
     @IsString()
     contentType!: string;

@@ -3,6 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { LoggingModule } from './shared-modules/logging/logging.module';
 import { AppConstants } from './modules/send/configs/app.constants';
+import { SendModule } from './modules/send/send.module';
+import { SendService } from './modules/send/services/send.Service';
 
 @Module({
   imports: [
@@ -36,9 +38,10 @@ import { AppConstants } from './modules/send/configs/app.constants';
     }),
     //custom app modules
     LoggingModule,
+    SendModule
 
   ],
   controllers: [],
-  providers: [],
+  providers: [SendService],
 })
 export class AppModule { }

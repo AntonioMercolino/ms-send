@@ -62,7 +62,7 @@ describe('NotificationService', () => {
   });
 
   //SAVE OR UPDDATE
-  it('Should save or update an Country', async () => {
+  it('Should save or update an notification', async () => {
     let notificationData: Notification = {
       toBeSent: false,
       errors: [],
@@ -77,12 +77,13 @@ describe('NotificationService', () => {
       group: "AA",
       physicalCommunicationType: "SC",
       vat: 0,
-      paFree: 0,
+      paFee: 0,
       paymentExpirationDate: "FA",
       amount: 0,
       cancelledIun: "123",
       documents: [],
-      recipient: []
+      recipient: [],
+      pagoPaIntMode: ""
     };
     let recipientData: Recipient = {
       taxId: "TEST Recipient",
@@ -91,7 +92,7 @@ describe('NotificationService', () => {
       internalId: "TEST Recipient",
       physicalAddress: new PhysicalAddressDTO,
       digitalDomicile: new DigitalDomicileDTO,
-      payments: new PaymentDTO,
+      payments: [],
       notificationId: notificationData
     }
     let documentData: Document = {
@@ -103,7 +104,8 @@ describe('NotificationService', () => {
       url: "TEST",
       httpMethod: "TEST",
       secret: "TEST",
-      notificationId: notificationData
+      notificationId: notificationData,
+      docIdx: ""
     }
     notificationData.documents = [documentData];
     notificationData.recipient = [recipientData];
@@ -116,7 +118,7 @@ describe('NotificationService', () => {
     notification.documents = [documentData];
     notification.recipient = [recipientData];
     let notificationUpdate: Notification | undefined = await notificationService.saveOrUpdate(notification);
-    console.log("Notifications:", notificationUpdate);
+    //console.log("Notifications:", notificationUpdate);
     expect(notificationUpdate).toBeDefined();
 
   });
@@ -136,12 +138,13 @@ describe('NotificationService', () => {
       group: "AA",
       physicalCommunicationType: "SC",
       vat: 0,
-      paFree: 0,
+      paFee: 0,
       paymentExpirationDate: "FA",
       amount: 0,
       cancelledIun: "123",
       documents: [],
-      recipient: []
+      recipient: [],
+      pagoPaIntMode: ""
     };
     let recipientData: Recipient = {
       taxId: "TEST Recipient",
@@ -150,7 +153,7 @@ describe('NotificationService', () => {
       internalId: "TEST Recipient",
       physicalAddress: new PhysicalAddressDTO,
       digitalDomicile: new DigitalDomicileDTO,
-      payments: new PaymentDTO,
+      payments: [],
       notificationId: notificationData
     }
     let documentData: Document = {
@@ -162,7 +165,8 @@ describe('NotificationService', () => {
       url: "TEST",
       httpMethod: "TEST",
       secret: "TEST",
-      notificationId: notificationData
+      notificationId: notificationData,
+      docIdx: ""
     }
     notificationData.documents = [documentData];
     notificationData.recipient = [recipientData];
@@ -190,12 +194,13 @@ describe('NotificationService', () => {
       group: "AA",
       physicalCommunicationType: "SC",
       vat: 0,
-      paFree: 0,
+      paFee: 0,
       paymentExpirationDate: "FA",
       amount: 0,
       cancelledIun: "123",
       documents: [],
-      recipient: []
+      recipient: [],
+      pagoPaIntMode: ""
     };
     let recipientData: Recipient = {
       taxId: "TEST Recipient",
@@ -204,7 +209,7 @@ describe('NotificationService', () => {
       internalId: "TEST Recipient",
       physicalAddress: new PhysicalAddressDTO,
       digitalDomicile: new DigitalDomicileDTO,
-      payments: new PaymentDTO,
+      payments: [],
       notificationId: notificationData
     }
     let documentData: Document = {
@@ -216,7 +221,8 @@ describe('NotificationService', () => {
       url: "TEST",
       httpMethod: "TEST",
       secret: "TEST",
-      notificationId: notificationData
+      notificationId: notificationData,
+      docIdx: ""
     }
     notificationData.documents = [documentData];
     notificationData.recipient = [recipientData];

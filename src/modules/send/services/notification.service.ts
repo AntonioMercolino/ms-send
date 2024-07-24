@@ -100,7 +100,7 @@ export class NotificationService {
                     'group',
                     'physicalCommunicationType',
                     'vat',
-                    'paFree',
+                    'paFee',
                     'paymentExpirationDate',
                     'amount',
                     'cancelledIun',

@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from "class-validator";
+import { IsOptional, isString, IsString } from "class-validator";
 import { CustomBaseEntity } from "../../../shared-modules/database/entities/custom-base-entity.config";
 import { Column, Entity, Index, ManyToOne } from "typeorm";
 import { Notification } from "./notification.entity";
@@ -26,8 +26,14 @@ export class Document extends CustomBaseEntity {
 
     @Column()
     @IsString()
+    @IsOptional()
+    docIdx?: string;
+
+    @Column()
+    @IsString()
     @Index()
-    title!: string;
+    @IsOptional()
+    title?: string;
 
     @Column()
     @IsString()

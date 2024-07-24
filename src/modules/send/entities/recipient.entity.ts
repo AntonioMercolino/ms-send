@@ -20,8 +20,6 @@ export class  Recipient extends CustomBaseEntity {
     denomination!: string;
 
     @Column()
-    @IsString()
-    @Index()
     recipientType!: string;
 
     @Column()
@@ -42,5 +40,5 @@ export class  Recipient extends CustomBaseEntity {
     notificationId!: Notification;
 
     @Column(() => PaymentDTO)
-    payments!: PaymentDTO;
+    payments!: PaymentDTO[];
 }

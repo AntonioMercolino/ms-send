@@ -3,26 +3,26 @@ import { IsString } from 'class-validator';
 export class PhysicalAddressDTO {
 
     @IsString()
-    at!: string;
+    at?: string;
 
     @IsString()
     address!: string;
 
     @IsString()
-    addressDetails!: string;
+    addressDetails?: string;
 
     @IsString()
-    zip!: string;
+    zip?: string;
 
     @IsString()
     municipality!: string;
 
     @IsString()
-    municipalityDetails!: string;
+    municipalityDetails?: string;
 
     @IsString()
-    province!: string;
+    province?: string;
 
     @IsString()
-    foreignState!: string;
+    foreignState?: string;
 }

@@ -73,7 +73,7 @@ export class Notification extends CustomBaseEntity {
     @Column()
     @IsNumber()
     @Index()
-    paFree!: number;
+    paFee!: number;
 
     @Column()
     @IsString()
@@ -89,19 +89,23 @@ export class Notification extends CustomBaseEntity {
     @IsString()
     @Index()
     cancelledIun!: string;
+    
+    @Column()
+    @IsString()
+    @Index()
+    pagoPaIntMode!: string;
 
-    @IsOptional()
+    
     @OneToMany((type) => Document, (document) => document.notificationId,{
         onDelete: "CASCADE",
         onUpdate: "CASCADE"
     })
-    documents?: Document[];
+    documents!: Document[];
 
-    @IsOptional()
     @OneToMany(() => Recipient, (recipient) => recipient.notificationId,{
         onDelete: "CASCADE",
         onUpdate: "CASCADE"
     })
-    recipient?: Recipient[];
+    recipient!: Recipient[];
     
 }

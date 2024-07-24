@@ -13,5 +13,5 @@ export class PagoPaDTO {
     @IsBoolean()
     applyCost!: boolean;
 
-    attachment!: AttachmentDTO;
+    attachment?: AttachmentDTO;
 }
