@@ -1,16 +1,17 @@
-# ms-send
+# MS-SEND
 
-ms-send is a [Nest](https://github.com/nestjs/nest) microservice project, written in Typescript, configured to communicate by using the [Kafka](https://kafka.apache.org/) broker. It already provides the following shared-modules:
+MS-SEND is a [Nest](https://github.com/nestjs/nest) microservice project, written in Typescript, configured to communicate by using the [Kafka](https://kafka.apache.org/) broker. It already provides the following shared-modules:
 * database: used for the database access by using TypeORM (PostgreSQL as default);
 * clients-manager: used to communicate with other microservices by default using the [Kafka](https://kafka.apache.org/) broker;
 * file-system: used for file system access (it can be used to apply the Claim Check pattern to exchange file between microservices);
 * logging: used to log json-based data with [Pino](https://getpino.io/#/) to a clients-manager configured broker;
+* cipher-manager: used to encrypt or decrypt text;
 
 ## Description
 
 It uses the "@nestjs/config" library to access to the environment variables, configured inside a .env file, for which it is provided a starting example.
 All the .env params are validated at startup by using the "Joi" library.
-A ValidationPipe is configured to validate the content of objects, by using "class-validator" and "class-transformer" libraries.
+A ValidationPipe is configured to validate the content of objects, by using "class-validator" and "class-transformer" libraries (default exceptions are wrapped in RpcException). Responses are serialized by configuring a ClassSerializerInterceptor.
 It provides an already configured Dockerfile.
 The following params must be specified in the .env file:
 * NODE_ENV: can be "development", "test" or "production";
@@ -33,7 +34,7 @@ Each new module:
 * can import other modules by adding the necessary import in the module configurations;
 * must be imported in app.module.ts in order to be loaded at startup;
 
-The default "ms-send" project name can be updated inside package.json file.
+The default "MS-SEND" project name can be updated inside package.json file.
 
 The project contains the following modules (each module can be easily removed by deleted the respective directory):
 #### Database: 
@@ -91,6 +92,8 @@ The following params must be specified in the .env file:
 * DB_PASSWORD: is the password used for database auth;
 * DB_SCHEMA: is the database schema name;
 * DB_SYNCH: if "true" it allows to automatically create/update all database tables, in relation to the project entities. DB_SYNCH MUST BE false IN PRODUCTION TO AVOID DATA LOSS!
+* API_KEY:
+* API_URL:
 
 #### Clients-manager
 It provides a client which can be used to communicate with other microservices by default using a Kafka broker, by possibly using 'scram-sha-512' for authentication and SSL.
@@ -137,6 +140,13 @@ The following params must be specified in the .env file:
 * LOGGING_NAME: is the app name and it can be used to distinguish the origin of logs;
 * LOGGING_LEVEL: is the log level (one of "silent", "fatal", "error", "warn", "info", "debug", "trace");
 * LOGGING_ENABLE_CLIENTS_MANAGER_TRANSPORT: if it is "true" it allows to send logs to the configured ClientsManagerModule. If it is disabled, logs will be written to console;
+
+#### Cipher-manager
+It provides the main methods to encrypt and decrypt texts.
+The module that needs to import the cipher-manager module can specify the following in the respective Module imports declarations:
+```javascript
+CipherManagerModule,
+```
 
 ## Installation
 

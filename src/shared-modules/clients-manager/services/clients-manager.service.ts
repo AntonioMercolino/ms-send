@@ -1,9 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientKafka, ClientProxy } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
 import { ClientsManagerConstants } from '../configs/clients-manager.constants';
 import { ConfigService } from '@nestjs/config';
-import { ResponseMessage } from '../dtos/response-message.dto';
 
 @Injectable()
 export class ClientsManagerService {
@@ -56,12 +54,14 @@ export class ClientsManagerService {
           if (this.client instanceof ClientKafka) {
             this.client.subscribeToResponseOf(topicName);
           }
-          let res: ResponseMessage<any> = await lastValueFrom(this.client.send(topicName, message));
-          if (res.error) {
-            this.logger.error(res.error);
-          } else {
-            return res.res;
-          }
+          return await new Promise<any>((resolve, reject) =>
+            this.client
+              .send(topicName, message)
+              .subscribe({
+                next: (value) => resolve(value),
+                error: (err) => reject(err),
+              })
+          );
         }
       }
     } catch (e) {

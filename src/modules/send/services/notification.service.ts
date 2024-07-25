@@ -13,7 +13,7 @@ import { Index } from "typeorm";
 
 @Injectable()
 export class NotificationService {
-    private readonly logger = new Logger(NotificationService.name);
+    
     constructor(
         @InjectRepository(NotificationRepository)
         private readonly notificationRepository: NotificationRepository,
@@ -22,6 +22,20 @@ export class NotificationService {
         @InjectRepository(DocumentRepository)
         private readonly documentRepository: DocumentRepository
     ) { }
+    
+    /**
+     * This method given an Notification, can save or update an Notification record.
+     * If an id is defined in the Notification parameter, this service will attempt to update an existing record having this id,
+     * otherwise, a new record will be created.
+     * 
+     * @param notification Notification
+     * @returns Promise<Notification>
+     * @example
+     * let newNotification: Notification = await this.notificationService.saveOrUpdate(notificationToSave);
+     * 
+     * UPDATE fails if:
+     *  -there is no record with the specified id;
+     */
     @Transactional()
     async saveOrUpdate(notification: Notification): Promise<Notification> {
         let notificationToUpdate: Notification | null;
@@ -77,12 +91,18 @@ export class NotificationService {
             return this.notificationRepository.save(notification);
         }
     }
+     /**
+     * This method, given a PaginatedQuery, finds and returns a paginated list of Notification that match the PaginatedQuery filters.
+     * 
+     * @param query PaginateQuery
+     * @returns Promise<Paginated<Notification>>>
+     * @example
+     * let response: Paginated<Notification>> = await this.notificationService.find({ path: 'http://localhost',filter:{"name":"$ilike:USER"}, select:['id']});
+     */
 
-    async find(query: PaginateQuery): Promise<Paginated<Notification> | undefined> {
-        try {
-            return await paginate(query, this.notificationRepository.createQueryBuilder('notification')
-                .leftJoinAndSelect('notification.documents', 'documents')
-                .leftJoinAndSelect('notification.recipient', 'recipient'), {
+    async find(query: PaginateQuery): Promise<Paginated<Notification>> {
+        return await paginate(query, this.notificationRepository, {
+           
                 sortableColumns: [
                     'id',
                     'updatedAt',
@@ -121,37 +141,23 @@ export class NotificationService {
                 select: [],
                 defaultSortBy: [['id', 'ASC']],
             });
-        } catch (e) {
-            this.logger.error(e);
-            return undefined;
-        }
     }
+    /**
+     * This method, deleted a row on database
+     * 
+     * @param notificationId 
+     * @returns Promise<Notification>>
+     * @example
+     * 
+     */
     @Transactional()
-    async delete(notificationId: string): Promise<Notification | undefined> {
+    async delete(notificationId: string): Promise<Notification> {
         const notification = await this.notificationRepository.findOne({
             where: { id: notificationId },
             relations: { documents: true, recipient: true },
         });
         if (!notification)
             throw new Error(`Notification with ID ${notificationId} not found`);
-        if (notification.documents && notification.documents.length > 0) {
-            for (const document of notification.documents) {
-                let documentDelete = await this.documentRepository.delete(document);
-                await this.saveOrUpdate(notification);
-                if (!documentDelete) {
-                    throw new Error("It's not possible to Delete document id: " + document.id);
-                }
-            }
-        }
-        if (notification.recipient && notification.recipient.length > 0) {
-            for (const recipient of notification.recipient) {
-                let recipientDelete = await this.recipientRepository.delete(recipient);
-                await this.saveOrUpdate(notification);
-                if (!recipientDelete) {
-                    throw new Error("It's not possible to Delete recipient id: " + recipient.id);
-                }
-            }
-        }
         //Delete
         let result = await this.notificationRepository.delete(notificationId);
         if (result.affected === 0)

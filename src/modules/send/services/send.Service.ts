@@ -9,7 +9,7 @@ import { Configuration,
          NotificationPaymentItem, 
          NewNotificationRequestV23PhysicalCommunicationTypeEnum, 
          NewNotificationRequestV23PagoPaIntModeEnum, 
-         NotificationDigitalAddress} from "../../../../api-external-generated";
+         NotificationDigitalAddress} from "../../../../apiClient";
 import { Notification } from "../entities/notification.entity";
 
 @Injectable()
@@ -17,11 +17,13 @@ export class SendService {
     private newNotificationApi: NewNotificationApi;
     constructor(
         private configService: ConfigService,
-        configAPI: Configuration,
+        configAPI: Configuration
     ) {
         configAPI.basePath = this.configService.get<string>('BASE_URL');
         configAPI.apiKey = this.configService.get<string>('API_KEY');
         this.newNotificationApi = new NewNotificationApi(configAPI);
+
+
     }
     mapNotification(notification: Notification): NewNotificationRequestV23 {
         return {

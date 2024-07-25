@@ -45,7 +45,7 @@ import { addTransactionalDataSource } from 'typeorm-transactional';
                 //sync DB with model entities (do NOT use in production to avoid data loss!!!)
                 synchronize: configService.get('DB_SYNCH'),
             }),
-            async dataSourceFactory(options) {
+            async dataSourceFactory(options) {//used for transactional methods
                 if (!options) {
                   throw new Error('Invalid options passed');
                 }

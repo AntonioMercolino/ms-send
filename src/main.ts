@@ -1,6 +1,6 @@
-import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { NestFactory, Reflector } from '@nestjs/core';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import { MicroserviceOptions, RpcException, Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
 import { Logger } from 'nestjs-pino';
 import { initializeTransactionalContext } from 'typeorm-transactional';
@@ -54,8 +54,13 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
+      exceptionFactory: (errors) => {//wrap the default "Bad request" exception in RpcException
+        return new RpcException(errors);
+      }
     }
   ));
+  //class serializer for the serialization of responses
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   //microservice listen
   await app.listen();
 }

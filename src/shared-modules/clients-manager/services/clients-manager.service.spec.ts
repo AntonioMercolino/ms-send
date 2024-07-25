@@ -57,7 +57,7 @@ describe('ClientsManagerService', () => {
     let res2: boolean = await service.sendMessageAsync(undefined!, message);
     expect(res2).toBeFalsy();
     let res3 = await service.sendMessageSync(topicName, message);
-    expect(res3).toBe(message);
+    expect(res3.res).toBe(message);
     /*let res4 = await service.sendMessageSync(topicName, { error: 'test-error-log' });
     expect(res4).toBe(undefined);*/
   });

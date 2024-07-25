@@ -63,6 +63,10 @@ describe('NotificationService', () => {
 
   //SAVE OR UPDDATE
   it('Should save or update an notification', async () => {
+    /**
+         * @case SAVE where the record is saved Successfully
+         * @return Notification
+         */
     let notificationData: Notification = {
       toBeSent: false,
       errors: [],
@@ -109,7 +113,7 @@ describe('NotificationService', () => {
     }
     notificationData.documents = [documentData];
     notificationData.recipient = [recipientData];
-    let notification: Notification | undefined = await notificationService.saveOrUpdate(notificationData);
+    let notification: Notification = await notificationService.saveOrUpdate(notificationData);
     expect(notification).toBeDefined();
 
     notification.subject = "TestUpdate"
@@ -117,7 +121,7 @@ describe('NotificationService', () => {
     documentData.path = "Update";
     notification.documents = [documentData];
     notification.recipient = [recipientData];
-    let notificationUpdate: Notification | undefined = await notificationService.saveOrUpdate(notification);
+    let notificationUpdate: Notification  = await notificationService.saveOrUpdate(notification);
     //console.log("Notifications:", notificationUpdate);
     expect(notificationUpdate).toBeDefined();
 
@@ -170,11 +174,11 @@ describe('NotificationService', () => {
     }
     notificationData.documents = [documentData];
     notificationData.recipient = [recipientData];
-    let notification: Notification | undefined = await notificationService.saveOrUpdate(notificationData);
+    let notification: Notification  = await notificationService.saveOrUpdate(notificationData);
     expect(notification).toBeDefined();
 
     let query: PaginateQuery = { path: 'http://localhost', filter: { paProtocolNumber: "$ilike:123" }, select: [] };
-    let notifications: Paginated<Notification> | undefined = await notificationService.find(query);
+    let notifications: Paginated<Notification>  = await notificationService.find(query);
     expect(notification).toBeDefined();
     expect(notifications?.data.length).toEqual(1);
   });
@@ -226,8 +230,8 @@ describe('NotificationService', () => {
     }
     notificationData.documents = [documentData];
     notificationData.recipient = [recipientData];
-    let notification: Notification | undefined = await notificationService.saveOrUpdate(notificationData);
-    // Tenta di eliminare la notifica
+    let notification: Notification  = await notificationService.saveOrUpdate(notificationData);
+    //DELETE
     if (notification.id) {
       let notificationDelete = await notificationService.delete(notification.id);
       expect(notificationDelete).toBeDefined();

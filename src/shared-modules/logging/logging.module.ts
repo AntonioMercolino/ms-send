@@ -41,7 +41,7 @@ import { ClientsManagerService } from '../clients-manager/services/clients-manag
                     serializers: {
                         req: function (req: any) {
                             let userId: string = undefined!;
-                            let basePath: string = undefined!;
+                            let basePath: string = "";
                             try {//try parse user data from jwt
                                 userId = JSON.parse(Buffer.from(req.headers['authorization'].split('.')[1], 'base64').toString()).sub;
                             } catch (e) { }

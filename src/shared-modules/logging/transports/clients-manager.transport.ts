@@ -11,7 +11,10 @@ export class ClientsManagerTransport extends Writable {
 
     override async _write(chunk: any, encoding: string, callback: (error?: Error | null) => void): Promise<void> {
         try {
-            this.clientsManagerService.sendMessageAsync(LogTopic.LOG_SAVE, chunk);
+            let res: boolean = await this.clientsManagerService.sendMessageAsync(LogTopic.LOG_SAVE, chunk);
+            if (!res) {
+                console.log(chunk);
+            }
             callback();
         } catch (e) {
             console.log(e);
