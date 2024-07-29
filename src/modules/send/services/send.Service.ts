@@ -1,16 +1,9 @@
-import { Injectable } from "@nestjs/common";
+import { ClassSerializerInterceptor, Injectable, UseInterceptors } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { Configuration, 
-         NewNotificationApi, 
-         NewNotificationRequestV23, 
-         NotificationFeePolicy,
-         NotificationAttachmentBodyRef, 
-         NotificationRecipientV23RecipientTypeEnum, 
-         NotificationPaymentItem, 
-         NewNotificationRequestV23PhysicalCommunicationTypeEnum, 
-         NewNotificationRequestV23PagoPaIntModeEnum, 
-         NotificationDigitalAddress} from "../../../../apiClient";
 import { Notification } from "../entities/notification.entity";
+import { plainToClass } from "class-transformer";
+import { NewNotificationRequestAPI } from "../dtos/NewNotificationRequestAPIs.dto";
+import { Configuration, NewNotificationApi } from "../clientAPI/apiClient";
 
 @Injectable()
 export class SendService {
@@ -25,29 +18,11 @@ export class SendService {
 
 
     }
-    mapNotification(notification: Notification): NewNotificationRequestV23 {
-        return {
-            ...notification,
-            recipients: notification.recipient.map(recipient => ({
-                ...recipient,
-                payments: recipient.payments.map(payment => ({...payment})) as NotificationPaymentItem[],
-                digitalDomicile: recipient.digitalDomicile as NotificationDigitalAddress,
-                recipientType: recipient.recipientType as NotificationRecipientV23RecipientTypeEnum,                    
-            })),
-            documents: notification.documents.map(document => ({
-                ...document,
-                ref: document.ref as NotificationAttachmentBodyRef,
-            })),
-            notificationFeePolicy: notification.notificationFeePolicy as NotificationFeePolicy,
-            physicalCommunicationType: notification.physicalCommunicationType as NewNotificationRequestV23PhysicalCommunicationTypeEnum,
-            pagoPaIntMode: notification.pagoPaIntMode as NewNotificationRequestV23PagoPaIntModeEnum
-        };
-    }
 
     async sendNotification(notification: Notification): Promise<boolean> {
         try {
-
-            const response = await this.newNotificationApi.sendNewNotificationV23(this.mapNotification(notification));
+            const apiRequest = plainToClass(NewNotificationRequestAPI,notification);
+            const response = await this.newNotificationApi.sendNewNotificationV23(apiRequest);
             return response.status === 200;
         } catch (error) {
             console.error('Errore durante l\'invio della notifica:', error);

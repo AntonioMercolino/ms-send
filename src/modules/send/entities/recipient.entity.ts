@@ -7,7 +7,7 @@ import { PhysicalAddressDTO } from "../dtos/physicalAdress.dto";
 import { PaymentDTO } from "../dtos/payment.dto";
 
 @Entity()
-export class  Recipient extends CustomBaseEntity {
+export class  Recipient extends CustomBaseEntity  {
 
     @Column()
     @IsString()
