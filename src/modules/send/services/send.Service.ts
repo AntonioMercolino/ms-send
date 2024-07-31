@@ -23,8 +23,10 @@ export class SendService {
         try {
             const apiRequest = plainToClass(NewNotificationRequestAPI,notification);
             const response = await this.newNotificationApi.sendNewNotificationV23(apiRequest);
-            return response.status === 200;
+           return response.status===200;  
+
         } catch (error) {
+            console.log('Errore send notification');
             console.error('Errore durante l\'invio della notifica:', error);
             return false;
         }
