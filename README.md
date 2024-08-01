@@ -92,6 +92,9 @@ The following params must be specified in the .env file:
 * DB_PASSWORD: is the password used for database auth;
 * DB_SCHEMA: is the database schema name;
 * DB_SYNCH: if "true" it allows to automatically create/update all database tables, in relation to the project entities. DB_SYNCH MUST BE false IN PRODUCTION TO AVOID DATA LOSS!
+#### Configuration-sendScheduler and API client
+* SEND_SCHEDULER_CRON_EXPRESSION:represents the expression to be passed to the cron, to establish when the scheduler should be awakened to send notifications in the queue (e.g. "45 * * * * * *");
+* SEND_MAX_SENDING_ATTEMPTS_NUMBER:indicates the maximum number of retransmission attempts for notifications gone wrong, using an exponential backoff policy;
 * API_KEY: is the api key used for client-API
 * BASE_URL:is the base_url used for REST API
 
