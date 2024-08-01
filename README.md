@@ -92,8 +92,8 @@ The following params must be specified in the .env file:
 * DB_PASSWORD: is the password used for database auth;
 * DB_SCHEMA: is the database schema name;
 * DB_SYNCH: if "true" it allows to automatically create/update all database tables, in relation to the project entities. DB_SYNCH MUST BE false IN PRODUCTION TO AVOID DATA LOSS!
-* API_KEY:
-* API_URL:
+* API_KEY: is the api key used for client-API
+* BASE_URL:is the base_url used for REST API
 
 #### Clients-manager
 It provides a client which can be used to communicate with other microservices by default using a Kafka broker, by possibly using 'scram-sha-512' for authentication and SSL.

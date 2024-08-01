@@ -13,8 +13,8 @@ import { Configuration, NewNotificationApi } from '../clientAPI/apiClient';
 
 const mockConfigService = {
     get: jest.fn((key: string) => {
-      if (key === 'BASE_URL') return 'http://localhost';
-      if (key === 'API_KEY') return '123456';
+      if (key === 'BASE_URL') return 'https://api.notifichedigitali.it';
+      if (key === 'API_KEY') return '';
       return null;
     }),
   };
@@ -36,7 +36,7 @@ describe('SendService', () => {
         SendService,
         { provide: ConfigService, useValue: mockConfigService },
         { provide: NewNotificationApi, useValue: mockNewNotificationApi },
-        { provide: Configuration, useValue: { basePath: 'http://localhost', apiKey: '123456' } },
+        { provide: Configuration, useValue: { basePath: 'https://api.notifichedigitali.it', apiKey: '' } },
       ],
     }).compile();
     service = module.get<SendService>(SendService);
