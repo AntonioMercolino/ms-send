@@ -9,11 +9,8 @@ import { Paginated, PaginateQuery } from "nestjs-paginate";
 
 @Controller()
 export class NotificationController {
-
     constructor(private readonly notificationService: NotificationService) { }
-
     private readonly logger = new Logger(NotificationController.name);
-
     @MessagePattern(SendTopic.NOTIFICATION_SAVE_OR_UPDATE)
     async seveOrUpdate(@Payload() notification: Notification): Promise<Notification > {
         try {
@@ -30,8 +27,7 @@ export class NotificationController {
         } catch (e) {
             this.logger.error(e);
             throw new RpcException(SendError.NOTIFICATION_DELETE_ERROR);
-        }
-        
+        }    
     }
     @MessagePattern (SendTopic.NOTIFICATION_DELETE)
     async delete(@Payload() notificationId: string): Promise<Notification>{
@@ -42,7 +38,6 @@ export class NotificationController {
             throw new RpcException(SendError.NOTIFICATION_DELETE_ERROR);
         }
     }
-
 }
 
 

@@ -21,8 +21,7 @@ describe('NotificationService', () => {
     let notificationRepository: NotificationRepository;
     let recipientRepository: RecipientRepository;
     let documentRepository: DocumentRepository;
-  
-    beforeEach(async () => {
+   beforeEach(async () => {
       const module = await Test.createTestingModule({
         imports: [
           TypeOrmModule.forRoot({
@@ -43,7 +42,6 @@ describe('NotificationService', () => {
           NotificationRepository,
           RecipientRepository,
           DocumentRepository
-          
         ],
       }).compile();
       notificationController = module.get<NotificationController>(NotificationController);
@@ -100,5 +98,4 @@ describe('NotificationService', () => {
         let message2: Paginated<Notification>  = await notificationController.find(query2);
         expect(message2).toBeUndefined();
     });
-
 });

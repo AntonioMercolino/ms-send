@@ -15,16 +15,13 @@ export class SendService {
         configAPI.basePath = this.configService.get<string>('BASE_URL');
         configAPI.apiKey = this.configService.get<string>('API_KEY');
         this.newNotificationApi = new NewNotificationApi(configAPI);
-
-
     }
 
     async sendNotification(notification: Notification): Promise<boolean> {
         try {
-            const apiRequest = plainToClass(NewNotificationRequestAPI,notification);
+            const apiRequest = plainToClass(NewNotificationRequestAPI, notification);
             const response = await this.newNotificationApi.sendNewNotificationV23(apiRequest);
-           return response.status===200;  
-
+            return response.status === 200;
         } catch (error) {
             console.log('Errore send notification');
             console.error('Errore durante l\'invio della notifica:', error);

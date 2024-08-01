@@ -12,24 +12,21 @@ import { Document } from '../entities/document.entity'
 import { Configuration, NewNotificationApi } from '../clientAPI/apiClient';
 
 const mockConfigService = {
-    get: jest.fn((key: string) => {
-      if (key === 'BASE_URL') return 'https://api.notifichedigitali.it';
-      if (key === 'API_KEY') return '';
-      return null;
-    }),
-  };
-  
-  const mockNewNotificationApi = {
-    sendNewNotificationV23: jest.fn(),
-  };
-  const mockSendService = {
-    sendNotification: jest.fn(),
-  };
-  
+  get: jest.fn((key: string) => {
+    if (key === 'BASE_URL') return 'https://api.notifichedigitali.it';
+    if (key === 'API_KEY') return '';
+    return null;
+  }),
+};
+const mockNewNotificationApi = {
+  sendNewNotificationV23: jest.fn(),
+};
+const mockSendService = {
+  sendNotification: jest.fn(),
+};
 
 describe('SendService', () => {
   let service: SendService;
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -42,74 +39,66 @@ describe('SendService', () => {
     service = module.get<SendService>(SendService);
 
   });
-
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
-  
 
-  it ('should to be send notification', async () => {
+  it('should to be send notification', async () => {
     let notificationData: Notification = {
-        toBeSent: false,
-        errors: [],
-        nextSendingTime: new Date,
-        paProtocolNumber: "123",
-        subject: "122",
-        abstract: "222",
-        taxonomyCode: "333",
-        notificationFeePolicy: "FAKE",
-        senderTaxId: "543",
-        senderDenomination: "FF",
-        group: "AA",
-        physicalCommunicationType: "SC",
-        vat: 0,
-        paFee: 0,
-        paymentExpirationDate: "FA",
-        amount: 0,
-        cancelledIun: "123",
-        documents: [],
-        recipient: [],
-        pagoPaIntMode: ""
-      };
-      let recipientData: Recipient = {
-        taxId: "TEST Recipient",
-        denomination: "TEST Recipient",
-        recipientType: "TEST Recipient",
-        internalId: "TEST Recipient",
-        physicalAddress: new PhysicalAddressDTO,
-        digitalDomicile: new DigitalDomicileDTO,
-        payments: [],
-        notificationId: notificationData
-      }
-      let documentData: Document = {
-        path: "TEST",
-        contentType: "TEST",
-        digests: new DigestDTO,
-        ref: new RefDTO,
-        title: "TEST",
-        url: "TEST",
-        httpMethod: "TEST",
-        secret: "TEST",
-        notificationId: notificationData,
-        docIdx: ""
-      }
+      toBeSent: false,
+      errors: [],
+      nextSendingTime: new Date,
+      paProtocolNumber: "123",
+      subject: "122",
+      abstract: "222",
+      taxonomyCode: "333",
+      notificationFeePolicy: "FAKE",
+      senderTaxId: "543",
+      senderDenomination: "FF",
+      group: "AA",
+      physicalCommunicationType: "SC",
+      vat: 0,
+      paFee: 0,
+      paymentExpirationDate: "FA",
+      amount: 0,
+      cancelledIun: "123",
+      documents: [],
+      recipient: [],
+      pagoPaIntMode: ""
+    };
+    let recipientData: Recipient = {
+      taxId: "TEST Recipient",
+      denomination: "TEST Recipient",
+      recipientType: "TEST Recipient",
+      internalId: "TEST Recipient",
+      physicalAddress: new PhysicalAddressDTO,
+      digitalDomicile: new DigitalDomicileDTO,
+      payments: [],
+      notificationId: notificationData
+    }
+    let documentData: Document = {
+      path: "TEST",
+      contentType: "TEST",
+      digests: new DigestDTO,
+      ref: new RefDTO,
+      title: "TEST",
+      url: "TEST",
+      httpMethod: "TEST",
+      secret: "TEST",
+      notificationId: notificationData,
+      docIdx: ""
+    }
 
-      
-     // notificationData.documents = [documentData];
-     // notificationData.recipient = [recipientData];
+    mockNewNotificationApi.sendNewNotificationV23.mockReturnValue(true);
+    const respons = await service.sendNotification(notificationData);
+    console.log(respons)
+    expect(respons).toEqual(true)
 
-      mockNewNotificationApi.sendNewNotificationV23.mockReturnValue(true);
-
-      const respons = await service.sendNotification(notificationData);
-      console.log(respons)
-      expect(respons).toEqual(true)
-      
   });
-  //vedere bene 
-  //quando l'invio della notifica fallisce.
+
   it('should return false when sending notification fails', async () => {
 
-   (mockSendService.sendNotification as jest.Mock).mockRejectedValueOnce(new Error('Test error'));
+    (mockSendService.sendNotification as jest.Mock).mockRejectedValueOnce(new Error('Test error'));
 
     const notificationData: Notification = {
       toBeSent: false,
@@ -133,14 +122,12 @@ describe('SendService', () => {
       recipient: [],
       pagoPaIntMode: ""
     };
-
     try {
       const response = await service.sendNotification(notificationData);
-      expect(response).toEqual(false); 
+      expect(response).toEqual(false);
     } catch (error) {
       expect(error).toBeInstanceOf(Error);
     }
   });
-
 });
 

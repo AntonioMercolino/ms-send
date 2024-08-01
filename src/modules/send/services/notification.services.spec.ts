@@ -3,7 +3,6 @@ import { NotificationService } from "./notification.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Recipient } from "../entities/recipient.entity";
 import { Notification } from "../entities/notification.entity";
-import { PaymentDTO } from "../dtos/payment.dto";
 import { DigitalDomicileDTO } from "../dtos/digitalDomicile.dto";
 import { PhysicalAddressDTO } from "../dtos/physicalAdress.dto";
 import { Document } from "../entities/document.entity"
@@ -13,9 +12,6 @@ import { Paginated, PaginateQuery } from "nestjs-paginate";
 import { NotificationRepository } from "../repositories/notification.repository";
 import { DocumentRepository } from "../repositories/document.repository";
 import { RecipientRepository } from "../repositories/recipient.repository";
-import { AttachmentDTO } from "../dtos/attachment.dto";
-import { F24DTO } from "../dtos/f24.dto";
-import { PagoPaDTO } from "../dtos/pagoPa.dto";
 
 
 jest.mock('typeorm-transactional', () => ({
@@ -121,10 +117,9 @@ describe('NotificationService', () => {
     documentData.path = "Update";
     notification.documents = [documentData];
     notification.recipient = [recipientData];
-    let notificationUpdate: Notification  = await notificationService.saveOrUpdate(notification);
+    let notificationUpdate: Notification = await notificationService.saveOrUpdate(notification);
     //console.log("Notifications:", notificationUpdate);
     expect(notificationUpdate).toBeDefined();
-
   });
   //FIND
   it('should find and return Notification', async () => {
@@ -174,11 +169,10 @@ describe('NotificationService', () => {
     }
     notificationData.documents = [documentData];
     notificationData.recipient = [recipientData];
-    let notification: Notification  = await notificationService.saveOrUpdate(notificationData);
+    let notification: Notification = await notificationService.saveOrUpdate(notificationData);
     expect(notification).toBeDefined();
-
     let query: PaginateQuery = { path: 'http://localhost', filter: { paProtocolNumber: "$ilike:123" }, select: [] };
-    let notifications: Paginated<Notification>  = await notificationService.find(query);
+    let notifications: Paginated<Notification> = await notificationService.find(query);
     expect(notification).toBeDefined();
     expect(notifications?.data.length).toEqual(1);
   });
@@ -230,7 +224,7 @@ describe('NotificationService', () => {
     }
     notificationData.documents = [documentData];
     notificationData.recipient = [recipientData];
-    let notification: Notification  = await notificationService.saveOrUpdate(notificationData);
+    let notification: Notification = await notificationService.saveOrUpdate(notificationData);
     //DELETE
     if (notification.id) {
       let notificationDelete = await notificationService.delete(notification.id);
