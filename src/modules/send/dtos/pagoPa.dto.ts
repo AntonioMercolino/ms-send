@@ -1,8 +1,8 @@
 import { IsBoolean, IsString, ValidateNested, IsOptional } from 'class-validator';
 import { Type } from 'class-transformer';
-import { AttachmentDTO } from './attachment.dto';
+import { Attachment } from './attachment.dto';
 
-export class PagoPaDTO {
+export class PagoPa {
 
     @IsString()
     noticeCode!: string;
@@ -15,6 +15,6 @@ export class PagoPaDTO {
 
     @IsOptional()
     @ValidateNested()
-    @Type(() => AttachmentDTO)
-    attachment?: AttachmentDTO;
+    @Type(() => Attachment)
+    attachment?: Attachment;
 }

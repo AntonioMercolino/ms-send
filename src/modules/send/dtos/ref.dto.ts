@@ -1,6 +1,6 @@
 import { IsOptional, IsString } from 'class-validator';
 
-export class RefDTO {
+export class Ref {
 
     @IsString()
     key!: string;

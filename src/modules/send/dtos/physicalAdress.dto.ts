@@ -1,6 +1,6 @@
 import { IsOptional, IsString } from 'class-validator';
 
-export class PhysicalAddressDTO {
+export class PhysicalAddress {
 
     @IsOptional()
     @IsString()

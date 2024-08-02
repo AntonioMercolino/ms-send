@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class DigestDTO {
+export class Digest {
     @IsString()
     sha256!: string;
 }

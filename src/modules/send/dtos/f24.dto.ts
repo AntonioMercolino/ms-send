@@ -1,8 +1,8 @@
-import { IsBoolean, IsString, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
-import { AttachmentDTO } from './attachment.dto';
+import { IsBoolean, IsString } from 'class-validator';
+import { Attachment } from './attachment.dto';
 
-export class F24DTO {
+
+export class F24 {
 
     @IsString()
     title!: string;
@@ -10,7 +10,5 @@ export class F24DTO {
     @IsBoolean()
     applyCost!: boolean;
 
-    @ValidateNested()
-    @Type(() => AttachmentDTO)
-    metadataAttachment!: AttachmentDTO;
+    metadataAttachment!: Attachment;
 }

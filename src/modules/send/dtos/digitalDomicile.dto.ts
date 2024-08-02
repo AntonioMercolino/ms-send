@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class DigitalDomicileDTO {
+export class DigitalDomicile {
 
     @IsString()
     type!: string;

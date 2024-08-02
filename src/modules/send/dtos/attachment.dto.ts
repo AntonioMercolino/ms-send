@@ -1,17 +1,17 @@
 import { IsOptional, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { DigestDTO } from './digest.dto';
-import { RefDTO } from './ref.dto';
+import { Digest} from './digest.dto';
+import { Ref} from './ref.dto';
 
-export class AttachmentDTO {
+export class Attachment {
     @ValidateNested()
-    @Type(() => DigestDTO)
-    digests!: DigestDTO;
+    @Type(() => Digest)
+    digests!: Digest;
 
     @IsOptional()
     @ValidateNested()
-    @Type(() => RefDTO)
-    ref!: RefDTO;
+    @Type(() => Ref)
+    ref!: Ref;
 
     @IsString()
     contentType!: string;
