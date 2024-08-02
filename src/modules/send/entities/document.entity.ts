@@ -1,13 +1,13 @@
-import { IsOptional, isString, IsString } from "class-validator";
-import { CustomBaseEntity } from "../../../shared-modules/database/entities/custom-base-entity.config";
-import { Column, Entity, Index, ManyToOne } from "typeorm";
-import { Notification } from "./notification.entity";
-import { RefDTO } from "../dtos/ref.dto";
-import { DigestDTO } from "../dtos/digest.dto";
-
+import { IsOptional, IsString } from 'class-validator';
+import { CustomBaseEntity } from '../../../shared-modules/database/entities/custom-base-entity.config';
+import { Column, Entity, Index, ManyToOne } from 'typeorm';
+import { Notification } from './notification.entity';
+import { RefDTO } from '../dtos/ref.dto';
+import { DigestDTO } from '../dtos/digest.dto';
 
 @Entity()
 export class Document extends CustomBaseEntity {
+
     @Column()
     @IsString()
     @Index()
@@ -18,18 +18,18 @@ export class Document extends CustomBaseEntity {
     @Index()
     contentType!: string;
 
-    @Column(() => DigestDTO)
+    @Column('json')
     digests!: DigestDTO;
 
-    @Column(() => RefDTO)
+    @Column('json')
     ref!: RefDTO;
 
-    @Column()
+    @Column({ type: 'varchar', length: 255, nullable: true })
     @IsString()
     @IsOptional()
     docIdx?: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 255, nullable: true })
     @IsString()
     @Index()
     @IsOptional()
@@ -50,13 +50,14 @@ export class Document extends CustomBaseEntity {
     @Index()
     secret!: string;
 
+    @Column({ type: 'varchar', length: 255, nullable: true })
     @IsOptional()
     @IsString()
     x_amz_version_id?: string;
 
-    @ManyToOne(() => Notification, (notification) => notification.documents,{
-        onDelete: "CASCADE",
-        onUpdate:"CASCADE"
+    @ManyToOne(() => Notification, (notification) => notification.documents, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
     })
     notificationId!: Notification;
 }

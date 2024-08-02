@@ -1,6 +1,6 @@
-import { IsBoolean, IsString } from 'class-validator';
+import { IsBoolean, IsString, ValidateNested, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
 import { AttachmentDTO } from './attachment.dto';
-
 
 export class PagoPaDTO {
 
@@ -13,5 +13,8 @@ export class PagoPaDTO {
     @IsBoolean()
     applyCost!: boolean;
 
+    @IsOptional()
+    @ValidateNested()
+    @Type(() => AttachmentDTO)
     attachment?: AttachmentDTO;
 }

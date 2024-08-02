@@ -1,15 +1,14 @@
-import { IsBoolean, IsDate, IsNumber, IsOptional, IsString } from "class-validator";
-import { Column, Entity, Index, OneToMany } from "typeorm";
-import { Document } from "./document.entity";
-import { Recipient } from "./recipient.entity";
-import { CustomBaseEntity } from "../../../shared-modules/database/entities/custom-base-entity.config";
-import { ClassSerializerInterceptor, UseInterceptors } from "@nestjs/common";
-import { Transform, Type,Exclude, Expose } from "class-transformer";
-import { string } from "joi";
+import { IsBoolean, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import { Column, Entity, Index, OneToMany } from 'typeorm';
+import { Document } from './document.entity';
+import { Recipient } from './recipient.entity';
+import { CustomBaseEntity } from '../../../shared-modules/database/entities/custom-base-entity.config';
+import { ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
+import { Transform, Type, Exclude, Expose } from 'class-transformer';
 
 @Entity()
 @UseInterceptors(ClassSerializerInterceptor)
-export class Notification extends CustomBaseEntity  {
+export class Notification extends CustomBaseEntity {
 
     @Column()
     @IsBoolean()
@@ -18,7 +17,7 @@ export class Notification extends CustomBaseEntity  {
     toBeSent!: boolean;
 
     @Expose()
-    @Column('simple-json', { default: '[]' })
+    @Column('json', { default: '[]' })
     errors!: string[];
 
     @Expose()
@@ -56,7 +55,7 @@ export class Notification extends CustomBaseEntity  {
     @Column()
     @IsString()
     @Index()
-    notificationFeePolicy!: string ;
+    notificationFeePolicy!: string;
 
     @Expose()
     @Column()
@@ -81,18 +80,19 @@ export class Notification extends CustomBaseEntity  {
     @IsString()
     @Index()
     physicalCommunicationType!: string;
+
     @Expose()
     @Column()
     @IsNumber()
     @Type(() => Number)
     @Index()
     vat!: number;
-    
+
     @Expose()
     @Column()
     @IsNumber()
-    @Index()
     @Type(() => Number)
+    @Index()
     paFee!: number;
 
     @Expose()
@@ -100,41 +100,39 @@ export class Notification extends CustomBaseEntity  {
     @IsString()
     @Index()
     paymentExpirationDate!: string;
-    
+
     @Expose()
     @Column()
     @IsNumber()
     @Type(() => Number)
     @Index()
     amount!: number;
-    
+
     @Expose()
     @Column()
     @IsString()
     @Index()
     cancelledIun!: string;
-    
-    @Expose()    
+
+    @Expose()
     @Column()
     @IsString()
     @Index()
     pagoPaIntMode!: string;
 
-    @Expose()    
+    @Expose()
     @Type(() => Document)
-    @OneToMany((type) => Document, (document) => document.notificationId,{
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE"
+    @OneToMany(() => Document, (document) => document.notificationId, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
     })
     documents!: Document[];
 
-    @Expose()    
+    @Expose()
     @Type(() => Recipient)
-    @OneToMany(() => Recipient, (recipient) => recipient.notificationId,{
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE"
+    @OneToMany(() => Recipient, (recipient) => recipient.notificationId, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
     })
-    recipient!: Recipient[];
-
-    
+    recipients!: Recipient[];
 }

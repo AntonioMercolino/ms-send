@@ -1,13 +1,14 @@
-import { IsOptional, IsString } from "class-validator";
-import { CustomBaseEntity } from "../../../shared-modules/database/entities/custom-base-entity.config";
-import { Column, Entity, Index, ManyToOne, OneToMany } from "typeorm";
-import { Notification } from "./notification.entity";
-import { DigitalDomicileDTO } from "../dtos/digitalDomicile.dto";
-import { PhysicalAddressDTO } from "../dtos/physicalAdress.dto";
-import { PaymentDTO } from "../dtos/payment.dto";
+import { IsString } from 'class-validator';
+import { CustomBaseEntity } from '../../../shared-modules/database/entities/custom-base-entity.config';
+import { Column, Entity, Index, ManyToOne } from 'typeorm';
+import { Notification } from './notification.entity';
+import { DigitalDomicileDTO } from '../dtos/digitalDomicile.dto';
+import { PaymentDTO } from '../dtos/payment.dto';
+import { Expose, Type } from 'class-transformer';
+import { PhysicalAddressDTO } from '../dtos/physicalAdress.dto';
 
 @Entity()
-export class  Recipient extends CustomBaseEntity  {
+export class Recipient extends CustomBaseEntity {
 
     @Column()
     @IsString()
@@ -20,6 +21,8 @@ export class  Recipient extends CustomBaseEntity  {
     denomination!: string;
 
     @Column()
+    @IsString()
+    @Index()
     recipientType!: string;
 
     @Column()
@@ -27,18 +30,21 @@ export class  Recipient extends CustomBaseEntity  {
     @Index()
     internalId!: string;
 
-    @Column(() => PhysicalAddressDTO)
+    @Column('json')
+    @Expose()
     physicalAddress!: PhysicalAddressDTO;
 
-    @Column(() => DigitalDomicileDTO)
+    @Column('json')
+    @Expose()
     digitalDomicile!: DigitalDomicileDTO;
-    
-    @ManyToOne(() => Notification, (notification) => notification.recipient,{
-        onDelete: "CASCADE",
-        onUpdate:"CASCADE"
+
+    @ManyToOne(() => Notification, (notification) => notification.recipients, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
     })
     notificationId!: Notification;
 
-    @Column(() => PaymentDTO)
+    @Column('json')
+    @Expose()
     payments!: PaymentDTO[];
 }
