@@ -1,6 +1,6 @@
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Module } from "@nestjs/common";
-import { DatabaseModule } from "src/shared-modules/database/database.module";
+import { DatabaseModule } from "../../shared-modules/database/database.module";
 import { Recipient } from "./entities/recipient.entity";
 import { NotificationController } from "./controlles/notification.controller";
 import { NotificationService } from "./services/notification.service";
