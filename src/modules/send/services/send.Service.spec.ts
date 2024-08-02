@@ -1,13 +1,13 @@
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
-import { SendService } from './send.Service';
+import { SendService } from './send.service';
 import { Notification } from '../entities/notification.entity';
 import { Recipient } from '../entities/recipient.entity';
-import { DigestDTO } from '../dtos/digest.dto';
-import { RefDTO } from '../dtos/ref.dto';
-import { PhysicalAddressDTO } from '../dtos/physicalAdress.dto';
-import { DigitalDomicileDTO } from '../dtos/digitalDomicile.dto';
+import { Digest } from '../dtos/digest.dto';
+import { Ref } from '../dtos/ref.dto';
+import { PhysicalAddress } from '../dtos/physicalAdress.dto';
+import { DigitalDomicile } from '../dtos/digitalDomicile.dto';
 import { Document } from '../entities/document.entity'
 import { Configuration, NewNotificationApi } from '../clientAPI/apiClient';
 

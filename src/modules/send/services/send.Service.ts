@@ -2,7 +2,7 @@ import { ClassSerializerInterceptor, Injectable, UseInterceptors } from "@nestjs
 import { ConfigService } from "@nestjs/config";
 import { Notification } from "../entities/notification.entity";
 import { plainToClass } from "class-transformer";
-import { NewNotificationRequestAPI } from "../dtos/NewNotificationRequestAPIs.dto";
+import { NewNotificationRequestAPI } from "../dtos/newNotificationRequestAPI.dto";
 import { Configuration, NewNotificationApi } from "../clientAPI/apiClient";
 
 @Injectable()

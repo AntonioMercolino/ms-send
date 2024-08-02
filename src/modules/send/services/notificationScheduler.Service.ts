@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NotificationRepository } from '../repositories/notification.repository';
-import { SendService } from './send.Service';
+import { SendService } from './send.service';
 import { Notification } from '../entities/notification.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Configuration } from '../clientAPI/apiClient';

@@ -2,8 +2,8 @@ import { IsOptional, IsString } from 'class-validator';
 import { CustomBaseEntity } from '../../../shared-modules/database/entities/custom-base-entity.config';
 import { Column, Entity, Index, ManyToOne } from 'typeorm';
 import { Notification } from './notification.entity';
-import { RefDTO } from '../dtos/ref.dto';
-import { DigestDTO } from '../dtos/digest.dto';
+import { Ref} from '../dtos/ref.dto';
+import { Digest } from '../dtos/digest.dto';
 
 @Entity()
 export class Document extends CustomBaseEntity {
@@ -19,10 +19,10 @@ export class Document extends CustomBaseEntity {
     contentType!: string;
 
     @Column('json')
-    digests!: DigestDTO;
+    digests!: Digest;
 
     @Column('json')
-    ref!: RefDTO;
+    ref!: Ref;
 
     @Column({ type: 'varchar', length: 255, nullable: true })
     @IsString()

@@ -4,7 +4,7 @@ import { Document } from './document.entity';
 import { Recipient } from './recipient.entity';
 import { CustomBaseEntity } from '../../../shared-modules/database/entities/custom-base-entity.config';
 import { ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
-import { Transform, Type, Exclude, Expose } from 'class-transformer';
+import { Type,Expose } from 'class-transformer';
 
 @Entity()
 @UseInterceptors(ClassSerializerInterceptor)

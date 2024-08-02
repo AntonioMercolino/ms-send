@@ -2,10 +2,10 @@ import { IsString } from 'class-validator';
 import { CustomBaseEntity } from '../../../shared-modules/database/entities/custom-base-entity.config';
 import { Column, Entity, Index, ManyToOne } from 'typeorm';
 import { Notification } from './notification.entity';
-import { DigitalDomicileDTO } from '../dtos/digitalDomicile.dto';
-import { PaymentDTO } from '../dtos/payment.dto';
-import { Expose, Type } from 'class-transformer';
-import { PhysicalAddressDTO } from '../dtos/physicalAdress.dto';
+import { Expose} from 'class-transformer';
+import { PhysicalAddress } from '../clientAPI/apiClient';
+import { DigitalDomicile } from '../dtos/digitalDomicile.dto';
+import { Payment } from '../dtos/payment.dto';
 
 @Entity()
 export class Recipient extends CustomBaseEntity {
@@ -32,11 +32,11 @@ export class Recipient extends CustomBaseEntity {
 
     @Column('json')
     @Expose()
-    physicalAddress!: PhysicalAddressDTO;
+    physicalAddress!: PhysicalAddress;
 
     @Column('json')
     @Expose()
-    digitalDomicile!: DigitalDomicileDTO;
+    digitalDomicile!: DigitalDomicile;
 
     @ManyToOne(() => Notification, (notification) => notification.recipients, {
         onDelete: 'CASCADE',
@@ -46,5 +46,5 @@ export class Recipient extends CustomBaseEntity {
 
     @Column('json')
     @Expose()
-    payments!: PaymentDTO[];
+    payments!: Payment[];
 }

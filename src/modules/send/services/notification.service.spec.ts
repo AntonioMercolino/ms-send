@@ -3,15 +3,15 @@ import { NotificationService } from "./notification.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Recipient } from "../entities/recipient.entity";
 import { Notification } from "../entities/notification.entity";
-import { DigitalDomicileDTO } from "../dtos/digitalDomicile.dto";
-import { PhysicalAddressDTO } from "../dtos/physicalAdress.dto";
 import { Document } from "../entities/document.entity"
-import { DigestDTO } from "../dtos/digest.dto";
-import { RefDTO } from "../dtos/ref.dto";
 import { Paginated, PaginateQuery } from "nestjs-paginate";
 import { NotificationRepository } from "../repositories/notification.repository";
 import { DocumentRepository } from "../repositories/document.repository";
 import { RecipientRepository } from "../repositories/recipient.repository";
+import { PhysicalAddress } from "../dtos/physicalAddress.dto";
+import { DigitalDomicile } from "../dtos/digitalDomicile.dto";
+import { Digest } from "../dtos/digest.dto";
+import { Ref } from "../dtos/ref.dto";
 
 
 jest.mock('typeorm-transactional', () => ({
@@ -90,16 +90,16 @@ describe('NotificationService', () => {
       denomination: "TEST Recipient",
       recipientType: "TEST Recipient",
       internalId: "TEST Recipient",
-      physicalAddress: new PhysicalAddressDTO,
-      digitalDomicile: new DigitalDomicileDTO,
+      physicalAddress: new PhysicalAddress,
+      digitalDomicile: new DigitalDomicile,
       payments: [],
       notificationId: notificationData
     }
     let documentData: Document = {
       path: "TEST",
       contentType: "TEST",
-      digests: new DigestDTO,
-      ref: new RefDTO,
+      digests: new Digest,
+      ref: new Ref,
       title: "TEST",
       url: "TEST",
       httpMethod: "TEST",
@@ -150,16 +150,16 @@ describe('NotificationService', () => {
       denomination: "TEST Recipient",
       recipientType: "TEST Recipient",
       internalId: "TEST Recipient",
-      physicalAddress: new PhysicalAddressDTO,
-      digitalDomicile: new DigitalDomicileDTO,
+      physicalAddress: new PhysicalAddress,
+      digitalDomicile: new DigitalDomicile,
       payments: [],
       notificationId: notificationData
     }
     let documentData: Document = {
       path: "TEST",
       contentType: "TEST",
-      digests: new DigestDTO,
-      ref: new RefDTO,
+      digests: new Digest,
+      ref: new Ref,
       title: "TEST",
       url: "TEST",
       httpMethod: "TEST",
@@ -205,16 +205,16 @@ describe('NotificationService', () => {
       denomination: "TEST Recipient",
       recipientType: "TEST Recipient",
       internalId: "TEST Recipient",
-      physicalAddress: new PhysicalAddressDTO,
-      digitalDomicile: new DigitalDomicileDTO,
+      physicalAddress: new PhysicalAddress,
+      digitalDomicile: new DigitalDomicile,
       payments: [],
       notificationId: notificationData
     }
     let documentData: Document = {
       path: "TEST",
       contentType: "TEST",
-      digests: new DigestDTO,
-      ref: new RefDTO,
+      digests: new Digest,
+      ref: new Ref,
       title: "TEST",
       url: "TEST",
       httpMethod: "TEST",

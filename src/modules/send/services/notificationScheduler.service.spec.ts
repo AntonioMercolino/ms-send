@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { Notification } from '../entities/notification.entity';
 import { Configuration } from '../clientAPI/apiClient';
 import { NotificationSchedulerService } from './notificationScheduler.Service';
-import { SendService } from './send.Service';
+import { SendService } from './send.service';
 
 const mockConfigService = {
   get: jest.fn((key: string) => {
