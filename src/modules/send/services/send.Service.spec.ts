@@ -11,22 +11,21 @@ import { PhysicalAddress } from '../dtos/physicalAddress.dto';
 import { DigitalDomicile } from '../dtos/digitalDomicile.dto';
 import { SendService } from './send.Service';
 
-const mockConfigService = {
-  get: jest.fn((key: string) => {
-    if (key === 'BASE_URL') return 'https://api.notifichedigitali.it';
-    if (key === 'API_KEY') return '';
-    return null;
-  }),
-};
-const mockNewNotificationApi = {
-  sendNewNotificationV23: jest.fn(),
-};
-const mockSendService = {
-  sendNotification: jest.fn(),
-};
-
 describe('SendService', () => {
   let service: SendService;
+  const mockConfigService = {
+    get: jest.fn((key: string) => {
+      if (key === 'BASE_URL') return 'https://api.notifichedigitali.it';
+      if (key === 'API_KEY') return '';
+      return null;
+    }),
+  };
+  const mockNewNotificationApi = {
+    sendNewNotificationV23: jest.fn(),
+  };
+  const mockSendService = {
+    sendNotification: jest.fn(),
+  };
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
