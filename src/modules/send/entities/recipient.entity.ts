@@ -38,11 +38,10 @@ export class Recipient extends CustomBaseEntity {
     @Expose()
     digitalDomicile!: DigitalDomicile;
 
-    @ManyToOne(() => Notification, (notification) => notification.recipients, {
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
+    @ManyToOne(() => Notification, (notification) => notification.recipient, {
+        cascade:true,
     })
-    notificationId!: Notification;
+    notification!: Notification;
 
     @Column('json')
     @Expose()

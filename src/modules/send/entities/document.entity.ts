@@ -56,8 +56,7 @@ export class Document extends CustomBaseEntity {
     x_amz_version_id?: string;
 
     @ManyToOne(() => Notification, (notification) => notification.documents, {
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
+        cascade:true,
     })
-    notificationId!: Notification;
+    notification!: Notification;
 }

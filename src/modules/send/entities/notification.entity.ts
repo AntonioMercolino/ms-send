@@ -1,4 +1,4 @@
-import { IsBoolean, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsDate, IsNumber, IsString } from 'class-validator';
 import { Column, Entity, Index, OneToMany } from 'typeorm';
 import { Document } from './document.entity';
 import { Recipient } from './recipient.entity';
@@ -122,17 +122,15 @@ export class Notification extends CustomBaseEntity {
 
     @Expose()
     @Type(() => Document)
-    @OneToMany(() => Document, (document) => document.notificationId, {
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
+    @OneToMany(() => Document, (document) => document.notification, {
+      cascade:true,
     })
     documents!: Document[];
 
     @Expose()
     @Type(() => Recipient)
-    @OneToMany(() => Recipient, (recipient) => recipient.notificationId, {
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
+    @OneToMany(() => Recipient, (recipient) => recipient.notification, {
+        cascade:true,
     })
-    recipients!: Recipient[];
+    recipient!: Recipient[];
 }

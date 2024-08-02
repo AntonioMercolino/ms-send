@@ -1,15 +1,15 @@
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
-import { SendService } from './send.service';
 import { Notification } from '../entities/notification.entity';
 import { Recipient } from '../entities/recipient.entity';
-import { Digest } from '../dtos/digest.dto';
-import { Ref } from '../dtos/ref.dto';
-import { PhysicalAddress } from '../dtos/physicalAdress.dto';
-import { DigitalDomicile } from '../dtos/digitalDomicile.dto';
 import { Document } from '../entities/document.entity'
 import { Configuration, NewNotificationApi } from '../clientAPI/apiClient';
+import { Digest } from '../dtos/digest.dto';
+import { Ref } from '../dtos/ref.dto';
+import { PhysicalAddress } from '../dtos/physicalAddress.dto';
+import { DigitalDomicile } from '../dtos/digitalDomicile.dto';
+import { SendService } from './send.Service';
 
 const mockConfigService = {
   get: jest.fn((key: string) => {
@@ -71,21 +71,21 @@ describe('SendService', () => {
       denomination: "TEST Recipient",
       recipientType: "TEST Recipient",
       internalId: "TEST Recipient",
-      physicalAddress: new PhysicalAddressDTO,
-      digitalDomicile: new DigitalDomicileDTO,
+      physicalAddress: new PhysicalAddress,
+      digitalDomicile: new DigitalDomicile,
       payments: [],
-      notificationId: notificationData
+      notification: notificationData
     }
     let documentData: Document = {
       path: "TEST",
       contentType: "TEST",
-      digests: new DigestDTO,
-      ref: new RefDTO,
+      digests: new Digest,
+      ref: new Ref,
       title: "TEST",
       url: "TEST",
       httpMethod: "TEST",
       secret: "TEST",
-      notificationId: notificationData,
+      notification: notificationData,
       docIdx: ""
     }
 

@@ -49,7 +49,7 @@ describe('NotificationService', () => {
     recipientRepository = module.get<RecipientRepository>(RecipientRepository);
     documentRepository = module.get<DocumentRepository>(DocumentRepository);
   });
-
+    
   it('should be defined', () => {
     expect(notificationService).toBeDefined();
     expect(notificationRepository).toBeDefined();
@@ -93,7 +93,7 @@ describe('NotificationService', () => {
       physicalAddress: new PhysicalAddress,
       digitalDomicile: new DigitalDomicile,
       payments: [],
-      notificationId: notificationData
+      notification: notificationData
     }
     let documentData: Document = {
       path: "TEST",
@@ -104,7 +104,7 @@ describe('NotificationService', () => {
       url: "TEST",
       httpMethod: "TEST",
       secret: "TEST",
-      notificationId: notificationData,
+      notification: notificationData,
       docIdx: ""
     }
     notificationData.documents = [documentData];
@@ -118,7 +118,6 @@ describe('NotificationService', () => {
     notification.documents = [documentData];
     notification.recipient = [recipientData];
     let notificationUpdate: Notification = await notificationService.saveOrUpdate(notification);
-    //console.log("Notifications:", notificationUpdate);
     expect(notificationUpdate).toBeDefined();
   });
   //FIND
@@ -153,7 +152,7 @@ describe('NotificationService', () => {
       physicalAddress: new PhysicalAddress,
       digitalDomicile: new DigitalDomicile,
       payments: [],
-      notificationId: notificationData
+      notification: notificationData
     }
     let documentData: Document = {
       path: "TEST",
@@ -164,7 +163,7 @@ describe('NotificationService', () => {
       url: "TEST",
       httpMethod: "TEST",
       secret: "TEST",
-      notificationId: notificationData,
+      notification: notificationData,
       docIdx: ""
     }
     notificationData.documents = [documentData];
@@ -208,7 +207,7 @@ describe('NotificationService', () => {
       physicalAddress: new PhysicalAddress,
       digitalDomicile: new DigitalDomicile,
       payments: [],
-      notificationId: notificationData
+      notification: notificationData
     }
     let documentData: Document = {
       path: "TEST",
@@ -219,7 +218,7 @@ describe('NotificationService', () => {
       url: "TEST",
       httpMethod: "TEST",
       secret: "TEST",
-      notificationId: notificationData,
+      notification: notificationData,
       docIdx: ""
     }
     notificationData.documents = [documentData];
